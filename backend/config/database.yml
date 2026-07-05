@@ -10,3 +10,7 @@ default: &default
 development:
   <<: *default
   database: <%= ENV.fetch("POSTGRES_DB") { "bags_development" } %>
+
+test:
+  <<: *default
+  database: <%= ENV.fetch("POSTGRES_DB") { "bags_test" } %>
