@@ -1,10 +1,14 @@
+import { Button } from "@mui/material";
 import "./App.css";
-import { Button } from "@/components/Button";
+import { Route, Routes } from "react-router";
+import { Signup } from "./components/auth/Signup";
 
 function App() {
   return (
     <>
-      <Button />
+      <Routes>
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
     </>
   );
 }
