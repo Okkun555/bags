@@ -1,18 +1,14 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
-export type SignupForm = {
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-};
+import z from "zod";
 
 export const useSignup = () => {
   const {
-    register,
+    control,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<SignupForm>({
+  } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
     defaultValues: {
       email: "",
       password: "",
@@ -20,10 +16,27 @@ export const useSignup = () => {
     },
   });
 
+  const onSubmit = () => console.log("submit");
+
   return {
-    register,
+    control,
     handleSubmit,
-    watch,
     errors,
+    onSubmit,
   };
 };
+
+const schema = z
+  .object({
+    email: z.email({ message: "正しいメールアドレスの形式で入力してください" }),
+    password: z
+      .string()
+      .min(8, { message: "パスワードは8文字以上で入力してください" }),
+    passwordConfirmation: z
+      .string()
+      .min(8, { message: "パスワードは8文字以上で入力してください" }),
+  })
+  .refine((data) => data.password !== data.passwordConfirmation, {
+    message: "パスワードが一致しません",
+    path: ["passwordConfirmation"],
+  });
