@@ -36,7 +36,7 @@ const schema = z
       .string()
       .min(8, { message: "パスワードは8文字以上で入力してください" }),
   })
-  .refine((data) => data.password !== data.passwordConfirmation, {
+  .refine((data) => data.password === data.passwordConfirmation, {
     message: "パスワードが一致しません",
     path: ["passwordConfirmation"],
   });

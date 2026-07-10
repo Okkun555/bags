@@ -47,8 +47,8 @@ export const Signup = () => {
                 {...field}
                 label="パスワード(確認)"
                 fullWidth
-                error={!!errors.password}
-                helperText={errors.password?.message}
+                error={!!errors.passwordConfirmation}
+                helperText={errors.passwordConfirmation?.message}
               />
             )}
           />
