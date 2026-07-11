@@ -1,13 +1,16 @@
+import { useCreateAccount } from "@/repositories/auth/useSignupApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
+
+export type SignupForm = z.infer<typeof schema>;
 
 export const useSignup = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof schema>>({
+  } = useForm<SignupForm>({
     resolver: zodResolver(schema),
     defaultValues: {
       email: "",
@@ -16,7 +19,11 @@ export const useSignup = () => {
     },
   });
 
-  const onSubmit = () => console.log("submit");
+  const { postCreateAccount } = useCreateAccount();
+  const onSubmit = (data: SignupForm) => {
+    console.log(data);
+    postCreateAccount(data);
+  };
 
   return {
     control,
