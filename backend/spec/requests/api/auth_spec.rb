@@ -6,11 +6,9 @@ RSpec.describe "Api::Auth", type: :request do
 
     let(:params) do
       {
-        user: {
-          email: 'new@example.com',
-          password: 'password',
-          password_confirmation: 'password'
-        }
+        email: 'new@example.com',
+        password: 'password',
+        password_confirmation: 'password'
       }
     end
 
@@ -27,11 +25,9 @@ RSpec.describe "Api::Auth", type: :request do
       context "パスワードが一致しない場合" do
         let(:params) do
           {
-            user: {
-              email: 'new@example.com',
-              password: 'password',
-              password_confirmation: 'password111'
-            }
+            email: 'new@example.com',
+            password: 'password',
+            password_confirmation: 'password111'
           }
         end
 
@@ -48,7 +44,7 @@ RSpec.describe "Api::Auth", type: :request do
 
     let(:email) { "sample@email.com" }
     let(:password) { "password" }
-    let(:params) { { user: { email:, password: } } }
+    let(:params) { { email:, password: } }
 
     before do
       create(:user, email:, password: password)
@@ -64,7 +60,7 @@ RSpec.describe "Api::Auth", type: :request do
 
     context "無効なパラメーターの場合" do
       context "メールアドレスが異なる場合" do
-        let(:params) { { user: { email: "other_email@sample.com", password: password } } }
+        let(:params) { { email: "other_email@sample.com", password: password } }
 
         it "401ステータスコードとエラーメッセージを返す" do
           subject
@@ -74,7 +70,7 @@ RSpec.describe "Api::Auth", type: :request do
       end
 
       context "パスワードが異なる場合" do
-        let(:params) { { user: { email: email, password: "wrong_password" } } }
+        let(:params) { { email: email, password: "wrong_password" } }
 
         it "401ステータスコードとエラーメッセージを返す" do
           subject

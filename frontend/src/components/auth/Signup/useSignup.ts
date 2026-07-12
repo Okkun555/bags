@@ -1,4 +1,4 @@
-import { useCreateAccount } from "@/repositories/auth/useSignupApi";
+import { usePostAccount } from "@/repositories/auth/useSignupApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -19,9 +19,8 @@ export const useSignup = () => {
     },
   });
 
-  const { postCreateAccount } = useCreateAccount();
+  const { postCreateAccount } = usePostAccount();
   const onSubmit = (data: SignupForm) => {
-    console.log(data);
     postCreateAccount(data);
   };
 

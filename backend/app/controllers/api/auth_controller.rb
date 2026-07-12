@@ -16,8 +16,8 @@ class Api::AuthController < ApplicationController
   end
 
   def login
-    email = params[:user][:email]
-    password = params[:user][:password]
+    email = params[:email]
+    password = params[:password]
 
     user = User.find_by(email:)
 

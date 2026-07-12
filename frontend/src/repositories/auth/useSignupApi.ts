@@ -6,7 +6,7 @@ import useSWRMutation from "swr/mutation";
 /**
  * アカウント作成
  */
-export const useCreateAccount = () => {
+export const usePostAccount = () => {
   const { trigger, isMutating } = useSWRMutation<
     AccountCreateResponse,
     Error,
@@ -19,4 +19,17 @@ export const useCreateAccount = () => {
   });
 
   return { postCreateAccount: trigger, isMutating };
+};
+
+/**
+ * ログイン
+ */
+export const usePostLogin = () => {
+  const { trigger, isMutating } = useSWRMutation("/login", postRequest, {
+    onSuccess: () => {
+      console.log("自身の情報を取得するAPIへリクエストを投げる");
+    },
+  });
+
+  return { postLogin: trigger, isMutating };
 };

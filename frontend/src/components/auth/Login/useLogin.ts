@@ -1,13 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { usePostLogin } from "@/repositories/auth/useSignupApi";
+
+export type LoginForm = z.infer<typeof schema>;
 
 export const useLogin = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof schema>>({
+  } = useForm<LoginForm>({
     resolver: zodResolver(schema),
     defaultValues: {
       email: "",
@@ -15,7 +18,10 @@ export const useLogin = () => {
     },
   });
 
-  const onSubmit = () => console.log("リクエスト");
+  const { postLogin } = usePostLogin();
+  const onSubmit = (data: LoginForm) => {
+    postLogin(data);
+  };
 
   return {
     control,
