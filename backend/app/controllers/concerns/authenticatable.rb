@@ -5,23 +5,19 @@ module Authenticatable
     before_action :authorize_request
   end
 
+  attr_reader :current_user
+
   # コントローラーで before_action :authorize_request と利用する
   def authorize_request
-    header = request.headers['Authorization']
-    header = header.split(' ').last if header
+    header = request.headers["Authorization"]
+    return render_unauthorized unless header
 
-    begin
-      decoded = JsonWebToken.decode(header)
+    token = header.split(' ').last
+    decoded = JsonWebToken.decode(token)
+    @current_user = User.find(decoded[:user_id])
 
-      if decoded
-        @current_user = User.find(decoded[:user_id])
-      else
-        render_unauthorized
-      end
-
-    rescue ActiveRecord::RecordNotFound, JWT::DecodeError
-      render_unauthorized
-    end
+  rescue ActiveRecord::RecordNotFound, JWT::DecodeError
+    render_unauthorized
   end
 
   private
