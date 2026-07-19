@@ -7,6 +7,7 @@ const axiosInstance = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
+  withCredentials: true,
 });
 
 export const fetcher = <T>(url: string): Promise<T> =>

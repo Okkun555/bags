@@ -5,3 +5,5 @@ export type AccountCreateResponse = {
   token: string;
   user: User;
 };
+
+export type MeResponse = User;

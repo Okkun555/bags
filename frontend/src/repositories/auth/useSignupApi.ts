@@ -1,6 +1,7 @@
 import type { SignupForm } from "@/components/auth/Signup/useSignup";
 import { postRequest } from "@/libs/api/client";
 import type { AccountCreateResponse } from "@/types/apiResponse";
+import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 
 /**
@@ -13,8 +14,8 @@ export const usePostAccount = () => {
     string,
     SignupForm
   >("/signup", postRequest, {
-    onSuccess: () => {
-      console.log("自身の情報を取得するAPIへリクエストを投げる");
+    onSuccess: async () => {
+      await mutate("/me", undefined, { revalidate: true });
     },
   });
 
@@ -26,8 +27,8 @@ export const usePostAccount = () => {
  */
 export const usePostLogin = () => {
   const { trigger, isMutating } = useSWRMutation("/login", postRequest, {
-    onSuccess: () => {
-      console.log("自身の情報を取得するAPIへリクエストを投げる");
+    onSuccess: async () => {
+      await mutate("/me", undefined, { revalidate: true });
     },
   });
 
