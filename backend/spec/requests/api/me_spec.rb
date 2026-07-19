@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Api::Mes", type: :request do
+RSpec.describe "Api::Me", type: :request do
   describe "GET /me" do
     subject { get '/api/me', headers: headers }
 
