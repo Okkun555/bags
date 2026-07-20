@@ -14,7 +14,7 @@ RSpec.describe Authenticatable, type: :controller do
     context '有効なトークンがヘッダーにある場合' do
       it 'リクエストが成功すること' do
         token = JsonWebToken.encode(user_id: user.id)
-        request.headers['Authorization'] = "Bearer #{token}"
+        cookies[:token] = { value: token }
 
         get :index
         expect(response).to have_http_status(:ok)

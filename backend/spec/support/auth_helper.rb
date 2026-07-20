@@ -1,6 +1,6 @@
 module AuthHelper
-  def auth_headers(user)
-    token = JsonWebToken.encode(user_id: user.id)
-    { 'Authorization' => "Bearer #{token}" }
+  def login_as(user, token = nil)
+    token = token ? token :  JsonWebToken.encode(user_id: user.id)
+    cookies[:token] = token
   end
 end

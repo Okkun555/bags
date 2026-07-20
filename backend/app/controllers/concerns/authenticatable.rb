@@ -9,10 +9,7 @@ module Authenticatable
 
   # コントローラーで before_action :authorize_request と利用する
   def authorize_request
-    header = request.headers["Authorization"]
-    return render_unauthorized unless header
-
-    token = header.split(' ').last
+    token = cookies[:token]
     decoded = JsonWebToken.decode(token)
     @current_user = User.find(decoded[:user_id])
 

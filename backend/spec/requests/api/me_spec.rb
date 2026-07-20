@@ -5,11 +5,14 @@ RSpec.describe "Api::Me", type: :request do
     subject { get '/api/me', headers: headers }
 
     let!(:user) { create(:user) }
-    let(:headers) { auth_headers(user) }
 
     it_behaves_like 'requires authentication'
 
     context "認証済みの場合" do
+      before do
+        login_as(user)
+      end
+
       it "200とログイン中のユーザー情報を返す" do
         subject
         expect(response).to have_http_status(:ok)

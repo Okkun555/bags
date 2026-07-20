@@ -16,8 +16,7 @@ RSpec.describe "Api::Auth", type: :request do
       it "新しいユーザーを作成し、201ステータスコードとトークン、ユーザー情報を返す" do
         expect { subject }.to change(User, :count).by(1)
         expect(response).to have_http_status(:created)
-        json = response.parsed_body
-        expect(json["token"]).to be_present
+        expect(response.parsed_body["email"]).to eq(params[:email])
       end
     end
 
@@ -54,7 +53,7 @@ RSpec.describe "Api::Auth", type: :request do
       it "200ステータスコードと生成したトークンを返す" do
         subject
         expect(response).to have_http_status(:ok)
-        expect(response.parsed_body["token"]).to be_present
+        expect(response.parsed_body["email"]).to eq(params[:email])
       end
     end
 
@@ -65,7 +64,6 @@ RSpec.describe "Api::Auth", type: :request do
         it "401ステータスコードとエラーメッセージを返す" do
           subject
           expect(response).to have_http_status(:unauthorized)
-          expect(response.parsed_body["token"]).to be_nil
         end
       end
 
@@ -75,7 +73,6 @@ RSpec.describe "Api::Auth", type: :request do
         it "401ステータスコードとエラーメッセージを返す" do
           subject
           expect(response).to have_http_status(:unauthorized)
-          expect(response.parsed_body["token"]).to be_nil
         end
       end
 
@@ -85,7 +82,6 @@ RSpec.describe "Api::Auth", type: :request do
         it "401ステータスコードとエラーメッセージを返す" do
           subject
           expect(response).to have_http_status(:unauthorized)
-          expect(response.parsed_body["token"]).to be_nil
         end
       end
     end
