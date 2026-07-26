@@ -31,7 +31,7 @@ RSpec.describe "Api::Auth", type: :request do
         end
 
         it "422ステータスコードとエラーメッセージを返す" do
-          expect{ subject }.not_to change(User, :count)
+          expect { subject }.not_to change(User, :count)
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end

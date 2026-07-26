@@ -1,5 +1,5 @@
 class Api::AuthController < ApplicationController
-  skip_before_action :authorize_request, only: [:signup, :login]
+  skip_before_action :authorize_request, only: [ :signup, :login ]
 
   def signup
     user = User.new(user_params)
@@ -13,7 +13,7 @@ class Api::AuthController < ApplicationController
         secure: Rails.env.production?,
         same_site: Rails.env.production? ? :none : :lax,
         expires: 24.hours.from_now,
-        path: "/",
+        path: "/"
       }
 
       render json: UserSerializer.render_as_json(user), status: :created
@@ -35,18 +35,18 @@ class Api::AuthController < ApplicationController
         value: token,
         httponly: true,
         expires: 24.hours.from_now,
-        path: "/",
+        path: "/"
       }
-      
+
       render json: UserSerializer.render_as_json(user), status: :ok
     else
-      render json: { error: 'メールアドレスまたはパスワードが正しくありません' }, status: :unauthorized
+      render json: { error: "メールアドレスまたはパスワードが正しくありません" }, status: :unauthorized
     end
   end
 
   def logout
     cookies.delete(:token, path: "/")
-    render json: { message: 'ログアウトしました' }, status: :ok
+    render json: { message: "ログアウトしました" }, status: :ok
   end
 
   private

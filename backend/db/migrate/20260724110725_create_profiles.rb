@@ -11,7 +11,7 @@ class CreateProfiles < ActiveRecord::Migration[8.1]
       t.integer :income, null: true, comment: "年収(0:200万円未満, 1:200~400万円未満, 2:400~600万円未満, 3:600~800万円未満, 4:800~1000万円未満, 5:1000~1500万円未満, 6:1500~2000万円未満, 7:2000万円以上"
 
       t.timestamps
-    endz
+    end
 
     add_index :profiles, :name
   end
