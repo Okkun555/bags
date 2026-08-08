@@ -1,0 +1,8 @@
+ja:
+  activerecord:
+    models:
+      profile: "プロフィール"
+
+  errors:
+    profile:
+      already_exist: "アカウントに紐づくプロフィールが既に存在します。"
