@@ -6,8 +6,6 @@ RSpec.describe "Api::Me", type: :request do
 
     let!(:user) { create(:user) }
 
-    it_behaves_like 'requires authentication'
-
     context "認証済みの場合" do
       before do
         login_as(user)
@@ -21,6 +19,10 @@ RSpec.describe "Api::Me", type: :request do
                                               "email" => user.email
                                             })
       end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
     end
   end
 end
