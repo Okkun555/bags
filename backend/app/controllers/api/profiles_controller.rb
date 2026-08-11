@@ -5,10 +5,8 @@ class Api::ProfilesController < ApplicationController
     profile = current_user.build_profile(profile_params)
     authorize profile
 
-    if profile.save
+    if profile.save!
       render json: ProfileSerializer.render_as_json(profile), status: :created
-    else
-      render json: { errors: profile.errors }, status: :unprocessable_entity
     end
   end
 

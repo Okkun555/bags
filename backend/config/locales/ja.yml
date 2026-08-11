@@ -1,8 +1,15 @@
 ja:
   activerecord:
     models:
+      user: "アカウント"
       profile: "プロフィール"
-
+    attributes:
+      profile:
+        name: "アカウント名"
+        gender: "性別"
+        date_of_birth: "生年月日"
+        marital_status: "家族形態"
+        income: "収入"
   errors:
     profile:
       already_exist: "アカウントに紐づくプロフィールが既に存在します。"

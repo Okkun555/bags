@@ -58,6 +58,27 @@ RSpec.describe "Api::Profiles", type: :request do
           end
         end
       end
+
+      context "無効なパラメータの場合" do
+        let(:name) { '' }
+        let(:gender) { 'unknown' }
+
+        it "エラーメッセージと422(unprocessable_entity)を返す" do
+          expect { subject }.not_to change(Profile, :count)
+          expect(response).to have_http_status(:unprocessable_entity)
+
+          error = response.parsed_body["error"]
+          expect(error["message"]).to eq("入力内容に不備があります。")
+          expect(error["detail"]).to eq({
+                                          "gender" => [{
+                                                         "message" => "性別は一覧にありません"
+                                                       }],
+                                          "name" => [{
+                                                       "message" => "アカウント名を入力してください"
+                                                     }]
+                                        })
+        end
+      end
     end
 
     context "未ログインの場合" do
