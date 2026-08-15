@@ -1,0 +1,1 @@
+export { NewProfile } from "./NewProfile";

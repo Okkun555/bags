@@ -13,5 +13,9 @@ export const ProtectedRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
+  if (currentUser && !currentUser.profile) {
+    return <Navigate to="/profile/new" replace />;
+  }
+
   return <Outlet />;
 };
