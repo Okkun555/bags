@@ -4,7 +4,7 @@ RSpec.describe Profile, type: :model do
   describe "validations" do
     let(:profile) { build :profile, date_of_birth: }
 
-    describe "#date_of_birth_cannot_be_in_the_feature" do
+    describe "#date_of_birth_cannot_be_in_the_future" do
       context "生年月日が当日の場合" do
         let(:date_of_birth) { Date.today }
 
