@@ -1,3 +1,5 @@
+import type { Dayjs } from "dayjs";
+
 export type CurrentUser = {
   userId: User["id"];
   email: User["email"];
@@ -12,6 +14,6 @@ export type User = {
 export type Profile = {
   id: number;
   name: string;
-  dateOfBirth: string;
+  dateOfBirth: Dayjs;
   gender: "male" | "female" | "other";
 };
