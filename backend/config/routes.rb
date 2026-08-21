@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
     # マスターデータ
     resources :occupations, only: [ :index ]
+    resources :prefectures, only: [ :index ]
 
     resources :profiles, only: [ :create ]
 
