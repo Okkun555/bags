@@ -15,6 +15,8 @@ import { Controller } from "react-hook-form";
 import { useNewProfile } from "./useNewProfile";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import { useGetOccupations } from "@/repositories/master/useOccupation";
+import { useGetPrefectures } from "@/repositories/master/usePrefecture";
 
 const GENDER_OPTIONS = [
   { value: "male", label: "男性" },
@@ -42,6 +44,8 @@ const INCOME_OPTIONS = [
 
 export const NewProfile = () => {
   const { control, handleSubmit, errors, onSubmit } = useNewProfile();
+  const { occupations } = useGetOccupations();
+  const { prefectures } = useGetPrefectures();
 
   return (
     <WithHeaderLayout pageTitle="プロフィール設定">
@@ -104,6 +108,23 @@ export const NewProfile = () => {
 
             <Controller
               control={control}
+              name="prefecture"
+              render={({ field }) => (
+                <FormControl error={!!errors.prefecture}>
+                  <InputLabel id="prefecture-label">居住地</InputLabel>
+                  <Select {...field} id="prefecture-label" label="居住地">
+                    {prefectures?.map((prefecture) => (
+                      <MenuItem key={prefecture.id} value={prefecture.id}>
+                        {prefecture.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              control={control}
               name="maritalStatus"
               render={({ field }) => (
                 <FormControl error={!!errors.maritalStatus}>
@@ -122,6 +143,23 @@ export const NewProfile = () => {
                   <FormHelperText>
                     {errors.maritalStatus?.message}
                   </FormHelperText>
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="occupation"
+              render={({ field }) => (
+                <FormControl error={!!errors.occupation}>
+                  <InputLabel id="occupation-label">職種</InputLabel>
+                  <Select {...field} id="occupation-label" label="職種">
+                    {occupations?.map((occupation) => (
+                      <MenuItem key={occupation.id} value={occupation.id}>
+                        {occupation.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </FormControl>
               )}
             />

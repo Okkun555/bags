@@ -8,5 +8,8 @@ export type AccountCreateResponse = {
 
 export type MeResponse = User;
 
+// マスター
+export type OccupationsResponse = {};
+
 // プロフィール
 export type ProfileCreateResponse = Profile;
