@@ -1,6 +1,7 @@
 import { useAuth } from "@/providers/AuthProvider";
 import { CircularProgress } from "@mui/material";
 import { Navigate, Outlet, useLocation } from "react-router";
+import { paths } from "./paths";
 
 export const ProtectedRoute = () => {
   const { currentUser, isLoading } = useAuth();
@@ -14,8 +15,12 @@ export const ProtectedRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (!currentUser.profile && location.pathname !== "/profile/new") {
-    return <Navigate to="/profile/new" replace />;
+  if (!currentUser.profile && location.pathname !== paths.profile.new) {
+    return <Navigate to={paths.profile.new} replace />;
+  }
+
+  if (currentUser.profile && location.pathname === paths.profile.new) {
+    return <Navigate to={paths.dashboard} replace />;
   }
 
   return <Outlet />;

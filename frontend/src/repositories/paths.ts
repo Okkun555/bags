@@ -1,4 +1,4 @@
-export const paths = {
+export const backendPaths = {
   occupation: {
     index: "/occupations",
   },

@@ -17,6 +17,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     currentUser: {
       userId: data?.id ?? 0,
       email: data?.email ?? "",
+      profile: data?.profile,
     },
     isLoading: isLoading,
     hasError: !!error,

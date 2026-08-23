@@ -1,11 +1,11 @@
 import { fetcher } from "@/libs/api/client";
 import type { Occupations } from "@/types/master";
 import useSWR from "swr";
-import { paths } from "../paths";
+import { backendPaths } from "../paths";
 
 export const useGetOccupations = () => {
   const { data, isLoading, error } = useSWR<Occupations>(
-    paths.occupation.index,
+    backendPaths.occupation.index,
     fetcher,
   );
 
