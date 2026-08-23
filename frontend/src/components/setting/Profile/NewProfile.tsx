@@ -108,10 +108,10 @@ export const NewProfile = () => {
 
             <Controller
               control={control}
-              name="prefecture"
+              name="prefectureId"
               render={({ field }) => (
-                <FormControl error={!!errors.prefecture}>
-                  <InputLabel id="prefecture-label">居住地</InputLabel>
+                <FormControl error={!!errors.prefectureId}>
+                  <InputLabel id="prefecture-label">居住地（任意）</InputLabel>
                   <Select {...field} id="prefecture-label" label="居住地">
                     {prefectures?.map((prefecture) => (
                       <MenuItem key={prefecture.id} value={prefecture.id}>
@@ -149,11 +149,11 @@ export const NewProfile = () => {
 
             <Controller
               control={control}
-              name="occupation"
+              name="occupationId"
               render={({ field }) => (
-                <FormControl error={!!errors.occupation}>
-                  <InputLabel id="occupation-label">職種</InputLabel>
-                  <Select {...field} id="occupation-label" label="職種">
+                <FormControl error={!!errors.occupationId}>
+                  <InputLabel id="occupation-label">職種（任意）</InputLabel>
+                  <Select {...field} id="occupation-label" label="職種（任意）">
                     {occupations?.map((occupation) => (
                       <MenuItem key={occupation.id} value={occupation.id}>
                         {occupation.name}
@@ -168,7 +168,7 @@ export const NewProfile = () => {
               control={control}
               name="income"
               render={({ field }) => (
-                <FormControl error={!!errors.income}>
+                <FormControl error={!!errors.income} required>
                   <InputLabel id="income-label">年収</InputLabel>
                   <Select {...field} labelId="income-label" label="年収">
                     {INCOME_OPTIONS.map((option) => (

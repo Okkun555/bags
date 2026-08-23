@@ -13,6 +13,6 @@ class Api::ProfilesController < ApplicationController
   private
 
   def profile_params
-    params.expect(profile: [:name, :date_of_birth, :gender, :marital_status, :income])
+    params.expect(profile: [:name, :date_of_birth, :gender, :prefecture_id, :marital_status, :occupation_id, :income])
   end
 end

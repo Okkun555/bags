@@ -5,12 +5,17 @@ RSpec.describe "Api::Profiles", type: :request do
     subject { post "/api/profiles", params: }
 
     let(:user) { create(:user) }
+    let!(:occupation) { create(:occupation) }
+    let!(:prefecture) { create(:prefecture) }
 
     let(:name) { "アカウント名" }
     let(:date_of_birth) { 20.years.ago.strftime("%Y-%m-%d") }
     let(:gender) { "female" }
     let(:marital_status) { "married" }
     let(:income) { "from_400_to_600" }
+    let(:occupation_id) { occupation.id }
+    let(:prefecture_id) { prefecture.id }
+
     let(:params) do
       {
         profile: {
@@ -19,6 +24,8 @@ RSpec.describe "Api::Profiles", type: :request do
           gender:,
           marital_status:,
           income:,
+          occupation_id:,
+          prefecture_id:
         }
       }
     end
@@ -30,19 +37,51 @@ RSpec.describe "Api::Profiles", type: :request do
 
       context "有効なパラメータの場合" do
         context "プロフィールが未作成の場合" do
-          it "ユーザーに紐づくProfileを作成し、201(created)を返す" do
-            expect { subject }.to change(Profile, :count).by(+1)
-            expect(response).to have_http_status(:created)
+          context "職種・居住地を入力した場合" do
+            it "ユーザーに紐づくProfileを作成し、201(created)を返す" do
+              expect { subject }.to change(Profile, :count).by(+1)
+              expect(response).to have_http_status(:created)
 
-            profile = Profile.last
-            expect(response.parsed_body).to eq({
-                                                 "id" => profile&.id,
-                                                 "name" => params[:profile][:name],
-                                                 "date_of_birth" => params[:profile][:date_of_birth],
-                                                 "gender" => params[:profile][:gender],
-                                                 "marital_status" => params[:profile][:marital_status],
-                                                 "income" => params[:profile][:income],
-                                               })
+              profile = Profile.last
+              expect(response.parsed_body).to eq({
+                                                   "id" => profile&.id,
+                                                   "name" => params[:profile][:name],
+                                                   "date_of_birth" => params[:profile][:date_of_birth],
+                                                   "gender" => params[:profile][:gender],
+                                                   "marital_status" => params[:profile][:marital_status],
+                                                   "income" => params[:profile][:income],
+                                                   "occupation" => {
+                                                     "id" => occupation&.id,
+                                                     "name" => occupation&.name
+                                                   },
+                                                   "prefecture" => {
+                                                     "id" => prefecture&.id,
+                                                     "name" => prefecture.name
+                                                   }
+                                                 })
+            end
+          end
+
+          context "職種・居住地が未入力の場合" do
+            let(:occupation_id) { nil }
+            let(:prefecture_id) { nil }
+
+            it "ユーザーに紐づくProfileを作成し、201(created)を返す" do
+              expect { subject }.to change(Profile, :count).by(+1)
+              expect(response).to have_http_status(:created)
+
+              profile = Profile.last
+              expect(response.parsed_body).to eq({
+                                                   "id" => profile&.id,
+                                                   "name" => params[:profile][:name],
+                                                   "date_of_birth" => params[:profile][:date_of_birth],
+                                                   "gender" => params[:profile][:gender],
+                                                   "marital_status" => params[:profile][:marital_status],
+                                                   "income" => params[:profile][:income],
+                                                   "occupation" => nil,
+                                                   "prefecture" => nil
+                                                 })
+            end
           end
         end
 

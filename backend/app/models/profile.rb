@@ -1,7 +1,7 @@
 class Profile < ApplicationRecord
   belongs_to :user
-  has_one :prefecture
-  has_one :occupation
+  belongs_to :prefecture, optional: true
+  belongs_to :occupation, optional: true
 
   validates :name, presence: true, uniqueness: true, length: { maximum: 100 }
   validates :date_of_birth, presence: true

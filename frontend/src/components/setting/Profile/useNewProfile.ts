@@ -24,7 +24,8 @@ export const useNewProfile = () => {
       gender: "male",
       maritalStatus: "single",
       income: "under_200",
-      occupation: null,
+      occupationId: null,
+      prefectureId: null,
     },
   });
 
@@ -87,11 +88,11 @@ const schema = z.object({
   gender: z.enum(GENDER_VALUES, {
     message: "性別を選択してください",
   }),
-  prefecture: z.number().nullable(),
+  prefectureId: z.number().nullable(),
   maritalStatus: z.enum(MARITAL_STATUS_VALUES, {
     message: "婚姻状況を選択してください",
   }),
-  occupation: z.number().nullable(),
+  occupationId: z.number().nullable(),
   income: z.enum(INCOME_VALUES, {
     message: "年収を選択してください",
   }),
