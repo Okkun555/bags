@@ -6,7 +6,9 @@ export type AccountCreateResponse = {
   user: User;
 };
 
-export type MeResponse = User;
+export type MeResponse = User & {
+  profile: Profile;
+};
 
 // マスター
 export type OccupationsResponse = {};
