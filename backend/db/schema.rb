@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_24_110725) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_27_123614) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "budget_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false, comment: "項目名"
+    t.string "type", default: "fixed", null: false, comment: "予算種別(fixed:固定費, variable:変動費)"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id", "name"], name: "index_budget_items_on_user_id_and_name", unique: true
+    t.index ["user_id"], name: "index_budget_items_on_user_id"
+    t.check_constraint "type::text = ANY (ARRAY['fixed'::character varying, 'variable'::character varying]::text[])", name: "budget_items_type_check"
+  end
 
   create_table "occupations", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -56,6 +67,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_24_110725) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "budget_items", "users"
   add_foreign_key "profiles", "occupations"
   add_foreign_key "profiles", "prefectures"
   add_foreign_key "profiles", "users"
