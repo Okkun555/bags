@@ -10,6 +10,7 @@ import NewProfile from "./pages/NewProfile";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/ja";
+import HouseholdBudget from "./pages/HouseholdBudget";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/household-budget" element={<HouseholdBudget />} />
 
             <Route path="/profile/new" element={<NewProfile />} />
           </Route>

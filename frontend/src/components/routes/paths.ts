@@ -4,4 +4,5 @@ export const paths = {
   profile: {
     new: "/profile/new",
   },
+  houseHoldBudget: "/household-budget",
 };
