@@ -56,4 +56,44 @@ RSpec.describe "Api::BudgetItems", type: :request do
       it_behaves_like 'requires authentication'
     end
   end
+
+  describe "#create" do
+    subject { post "/api/budget_items", params: }
+
+    let(:params) do
+      {
+        budget_item: {
+          name:,
+          type:
+        }
+      }
+    end
+    let(:name) { "ペット費用" }
+    let(:type) { "variable" }
+
+    context "ログイン済みの場合" do
+      before do
+        login_as(user)
+      end
+
+      context "パラメータが有効な場合" do
+        it "カスタム予算項目を作成し、201と作成した予算項目を返す" do
+          subject
+          expect(response).to have_http_status(:created)
+
+          budget_item = BudgetItem.find_by(name: name)
+          expect(response.parsed_body).to eq({
+                                                 "id" => budget_item&.id,
+                                                 "name" => name,
+                                                 "operable" => true,
+                                                 "type" => type
+                                               })
+        end
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
 end

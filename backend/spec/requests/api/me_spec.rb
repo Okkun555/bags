@@ -37,7 +37,7 @@ RSpec.describe "Api::Me", type: :request do
                                                 "profile" => {
                                                   "id" => profile.id,
                                                   "name" => profile.name,
-                                                  "date_of_birth" => profile.date_of_birth.to_s ,
+                                                  "date_of_birth" => profile.date_of_birth.to_s,
                                                   "gender" => profile.gender,
                                                   "marital_status" => profile.marital_status,
                                                   "income" => profile.income,

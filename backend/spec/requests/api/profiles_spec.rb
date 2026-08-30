@@ -109,12 +109,12 @@ RSpec.describe "Api::Profiles", type: :request do
           error = response.parsed_body["error"]
           expect(error["message"]).to eq("入力内容に不備があります。")
           expect(error["detail"]).to eq({
-                                          "gender" => [{
+                                          "gender" => [ {
                                                          "message" => "性別は一覧にありません"
-                                                       }],
-                                          "name" => [{
+                                                       } ],
+                                          "name" => [ {
                                                        "message" => "アカウント名を入力してください"
-                                                     }]
+                                                     } ]
                                         })
         end
       end

@@ -43,7 +43,7 @@ class ApplicationController < ActionController::API
       details: exception.record.errors.group_by(&:attribute).transform_values do |errors|
         errors.map do |error|
           {
-            message: error.full_message,
+            message: error.full_message
           }
         end
       end

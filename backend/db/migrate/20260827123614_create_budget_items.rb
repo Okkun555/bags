@@ -10,6 +10,6 @@ class CreateBudgetItems < ActiveRecord::Migration[8.1]
     add_check_constraint :budget_items,
                          "type IN ('fixed', 'variable')",
                          name: "budget_items_type_check"
-    add_index :budget_items, [:user_id, :name], unique: true
+    add_index :budget_items, [ :user_id, :name ], unique: true
   end
 end

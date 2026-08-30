@@ -7,7 +7,7 @@ class BudgetItem < ApplicationRecord
   enum :type, { fixed: "fixed", variable: "variable" }, validate: true
 
   scope :default_items, -> { where(user_id: nil) }
-  scope :available_items, ->(user:) { where(user_id: [nil, user.id]) }
+  scope :available_items, ->(user:) { where(user_id: [ nil, user.id ]) }
 
   validates :name, presence: true, length: { maximum: 100 }
 
