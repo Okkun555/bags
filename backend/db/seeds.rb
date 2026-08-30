@@ -68,3 +68,25 @@ prefectures = [
 prefectures.each do |prefecture|
   Prefecture.find_or_create_by!(name: prefecture[:name], sequence: prefecture[:sequence])
 end
+
+# 予算マスター
+budget_items = [
+  { name: "家賃", type: :fixed },
+  { name: "水道・光熱費", type: :fixed },
+  { name: "通信費", type: :fixed },
+  { name: "サブスク費", type: :fixed },
+  { name: "税・社会保障", type: :fixed },
+  { name: "自動車", type: :fixed },
+  { name: "保険", type: :fixed },
+  { name: "食費", type: :variable },
+  { name: "日用品", type: :variable },
+  { name: "教養・教育", type: :variable },
+  { name: "趣味・娯楽", type: :variable },
+  { name: "衣服・美容", type: :variable },
+  { name: "健康・医療", type: :variable },
+  { name: "交際費", type: :variable }
+]
+
+budget_items.each do |budget_item|
+  BudgetItem.find_or_create_by!(name: budget_item[:name], user_id: nil, type: budget_item[:type])
+end
