@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import SavingsIcon from "@mui/icons-material/Savings";
 import { paths } from "../routes/paths";
-import { Link, useLocation } from "react-router"; // useLocationを追加
+import { Link, useLocation } from "react-router";
 
 const navItems = [
   { name: "ダッシュボード", link: paths.dashboard },
@@ -19,7 +19,7 @@ const navItems = [
 
 export const AppHeader = () => {
   const { currentUser } = useAuth();
-  const location = useLocation(); // 現在のパスを取得
+  const location = useLocation();
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -39,7 +39,6 @@ export const AppHeader = () => {
           </Typography>
           <Box>
             {navItems.map((item) => {
-              // 現在のパスと一致しているかチェック
               const isActive = location.pathname === item.link;
 
               return (
@@ -53,7 +52,6 @@ export const AppHeader = () => {
                     fontWeight: "bold",
                     mx: 1,
                     borderRadius: 0,
-                    // sxプロパティ内で動的にアンダーラインを切替
                     borderBottom: isActive
                       ? "3px solid #fff"
                       : "2px solid transparent",
