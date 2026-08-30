@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :prefectures, only: [ :index ]
 
     resources :profiles, only: [ :create ]
+    resources :budget_items
 
     post "signup", to: "auth#signup"
     post "login", to: "auth#login"

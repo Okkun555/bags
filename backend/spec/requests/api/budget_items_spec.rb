@@ -1,0 +1,59 @@
+require 'rails_helper'
+
+RSpec.describe "Api::BudgetItems", type: :request do
+  let!(:user) { create(:user) }
+
+  describe "#index" do
+    subject { get "/api/budget_items" }
+
+    context "ログイン済みの場合" do
+      let!(:default_budget_items1) { create(:budget_item, user: nil, type: :fixed) }
+      let!(:default_budget_items2) { create(:budget_item, user: nil, type: :variable) }
+      let!(:custom_budget_items1) { create(:budget_item, user:, type: :fixed) }
+      let!(:custom_budget_items2) { create(:budget_item, user:, type: :variable) }
+
+      let(:other_user) { create(:user) }
+      let!(:other_user_budget_items1) { create(:budget_item, user: other_user, type: :fixed) }
+      let!(:other_user_budget_items2) { create(:budget_item, user: other_user, type: :variable) }
+
+      before do
+        login_as(user)
+      end
+
+      it "200とシステム標準 + ユーザーのカスタム予算項目一覧を返す" do
+        subject
+        expect(response).to have_http_status(:ok)
+        expect(response.parsed_body).to match_array([
+                                                      {
+                                                        "id" => default_budget_items1.id,
+                                                        "name" => default_budget_items1.name,
+                                                        "type" => "fixed",
+                                                        "operable" => false
+                                                      },
+                                                      {
+                                                        "id" => default_budget_items2.id,
+                                                        "name" => default_budget_items2.name,
+                                                        "type" => "variable",
+                                                        "operable" => false
+                                                      },
+                                                      {
+                                                        "id" => custom_budget_items1.id,
+                                                        "name" => custom_budget_items1.name,
+                                                        "type" => "fixed",
+                                                        "operable" => true
+                                                      },
+                                                      {
+                                                        "id" => custom_budget_items2.id,
+                                                        "name" => custom_budget_items2.name,
+                                                        "type" => "variable",
+                                                        "operable" => true
+                                                      }
+                                                    ])
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
+end
