@@ -5,4 +5,9 @@ export const backendPaths = {
   prefecture: {
     index: "/prefectures",
   },
+  householdBudget: {
+    budgetItem: {
+      index: "/budget_items",
+    },
+  },
 };

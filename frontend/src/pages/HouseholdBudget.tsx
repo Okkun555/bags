@@ -1,1 +1,1 @@
-export { HouseholdBudget as default } from "@/components/household-budget/HouseholdBudget";
+export { HouseholdBudget as default } from "@/components/household-budget";
