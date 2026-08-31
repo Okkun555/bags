@@ -1,7 +1,9 @@
 import { backendPaths } from "@/repositories/paths";
-import { fetcher } from "@/libs/api/client";
-import useSWR from "swr";
-import type { BudgetItems } from "@/types/budgetItem";
+import { fetcher, postRequest } from "@/libs/api/client";
+import useSWR, { mutate } from "swr";
+import type { BudgetItem, BudgetItems } from "@/types/budgetItem";
+import useSWRMutation from "swr/mutation";
+import type { AddBudgetItemForm } from "@/components/household-budget/AddBudgetItemDialog/useAddBudgetItem";
 
 export const useBudgetItems = () => {
   const { data, isLoading, error } = useSWR<BudgetItems>(
@@ -13,5 +15,23 @@ export const useBudgetItems = () => {
     budgetItems: data,
     isLoading,
     error,
+  };
+};
+
+export const usePostBudgetItem = () => {
+  const { trigger, isMutating } = useSWRMutation<
+    BudgetItem,
+    Error,
+    string,
+    AddBudgetItemForm
+  >(backendPaths.householdBudget.budgetItem.create, postRequest, {
+    onSuccess: async () => {
+      await mutate(backendPaths.householdBudget.budgetItem.index);
+    },
+  });
+
+  return {
+    postBudgetItem: trigger,
+    isMutating,
   };
 };

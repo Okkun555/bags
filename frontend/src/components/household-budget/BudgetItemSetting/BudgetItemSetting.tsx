@@ -17,9 +17,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { useBudgetItems } from "@/repositories/household-budget/useBudgetItem";
+import { useState } from "react";
+import { AddBudgetItemDialog } from "../AddBudgetItemDialog";
 
 export const BudgetItemSetting = () => {
   const { budgetItems, isLoading } = useBudgetItems();
+
+  const [isOpenCreateDialog, setIsOpenCreateDialog] = useState(false);
 
   if (isLoading) {
     return (
@@ -41,7 +45,11 @@ export const BudgetItemSetting = () => {
         }}
       >
         <Typography variant="h6">予算項目設定</Typography>
-        <Button startIcon={<AddIcon />} variant="outlined">
+        <Button
+          startIcon={<AddIcon />}
+          variant="outlined"
+          onClick={() => setIsOpenCreateDialog(true)}
+        >
           項目を追加
         </Button>
       </Stack>
@@ -87,10 +95,15 @@ export const BudgetItemSetting = () => {
                   spacing={1}
                   sx={{ alignItems: "center" }}
                 >
-                  <span>{budgetItem.name}</span>
-                  {budgetItem.operable && (
-                    <Chip label="カスタム" size="small" variant="outlined" />
-                  )}
+                  <Chip
+                    label={budgetItem.type === "fixed" ? "固定費" : "変動費"}
+                    color={
+                      budgetItem.type === "fixed" ? "primary" : "secondary"
+                    }
+                    variant="filled"
+                    size="small"
+                  />
+                  <Typography>{budgetItem.name}</Typography>
                 </Stack>
               }
             />
@@ -103,6 +116,11 @@ export const BudgetItemSetting = () => {
           </ListItem>
         )}
       </List>
+
+      <AddBudgetItemDialog
+        isOpen={isOpenCreateDialog}
+        handleClose={() => setIsOpenCreateDialog(false)}
+      />
     </Box>
   );
 };

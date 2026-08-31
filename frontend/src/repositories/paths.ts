@@ -8,6 +8,7 @@ export const backendPaths = {
   householdBudget: {
     budgetItem: {
       index: "/budget_items",
+      create: "/budget_items",
     },
   },
 };
