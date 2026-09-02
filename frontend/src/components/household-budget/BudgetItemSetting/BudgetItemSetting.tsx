@@ -19,11 +19,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useBudgetItems } from "@/repositories/household-budget/useBudgetItem";
 import { useState } from "react";
 import { AddBudgetItemDialog } from "../AddBudgetItemDialog";
+import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
 
 export const BudgetItemSetting = () => {
   const { budgetItems, isLoading } = useBudgetItems();
 
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState(false);
+  const [isOpenDeleteDialog, setIsDeleteDialog] = useState(false);
 
   if (isLoading) {
     return (
@@ -61,7 +63,7 @@ export const BudgetItemSetting = () => {
             divider={index < budgetItems.length - 1}
             secondaryAction={
               budgetItem.operable ? (
-                <Stack direction="row" spacing={0.5}>
+                <Stack direction="row">
                   <IconButton
                     edge="end"
                     aria-label="編集"
@@ -72,7 +74,7 @@ export const BudgetItemSetting = () => {
                   <IconButton
                     edge="end"
                     aria-label="削除"
-                    onClick={() => console.log("ダイアログを開く")}
+                    onClick={() => setIsDeleteDialog(true)}
                   >
                     <DeleteIcon fontSize="small" />
                   </IconButton>
@@ -95,14 +97,6 @@ export const BudgetItemSetting = () => {
                   spacing={1}
                   sx={{ alignItems: "center" }}
                 >
-                  <Chip
-                    label={budgetItem.type === "fixed" ? "固定費" : "変動費"}
-                    color={
-                      budgetItem.type === "fixed" ? "primary" : "secondary"
-                    }
-                    variant="filled"
-                    size="small"
-                  />
                   <Typography>{budgetItem.name}</Typography>
                 </Stack>
               }
@@ -120,6 +114,13 @@ export const BudgetItemSetting = () => {
       <AddBudgetItemDialog
         isOpen={isOpenCreateDialog}
         handleClose={() => setIsOpenCreateDialog(false)}
+      />
+
+      <DeleteConfirmDialog
+        isOpen={isOpenDeleteDialog}
+        handleClose={() => setIsDeleteDialog(false)}
+        handleDelete={() => console.log("削除")}
+        targetName="予算項目"
       />
     </Box>
   );
