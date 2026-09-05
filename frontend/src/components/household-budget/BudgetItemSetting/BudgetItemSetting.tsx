@@ -48,7 +48,9 @@ export const BudgetItemSetting = () => {
           mb: 2,
         }}
       >
-        <Typography variant="h6">予算項目設定</Typography>
+        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+          予算項目設定
+        </Typography>
         <Button
           startIcon={<AddIcon />}
           variant="outlined"
@@ -58,83 +60,92 @@ export const BudgetItemSetting = () => {
         </Button>
       </Stack>
 
-      <List sx={{ border: 1, borderColor: "divider", borderRadius: 1, py: 0 }}>
-        {budgetItems?.map((budgetItem, index) => (
-          <ListItem
-            key={budgetItem.id}
-            divider={index < budgetItems.length - 1}
-            secondaryAction={
-              budgetItem.operable ? (
-                <Stack direction="row">
-                  <IconButton
-                    edge="end"
-                    aria-label="編集"
-                    onClick={() => {
-                      console.log("ダイアログを開く");
-                      setTarget(budgetItem);
-                    }}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton
-                    edge="end"
-                    aria-label="削除"
-                    onClick={() => {
-                      setIsDeleteDialog(true);
-                      setTarget(budgetItem);
-                    }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Stack>
-              ) : (
-                <Tooltip title="標準項目は編集・削除できません">
-                  <span>
-                    <IconButton edge="end" disabled>
-                      <LockIcon />
+      <Stack spacing={1.5}>
+        <Typography variant="body1">
+          家計予算を計画する際に利用する「項目マスター」を管理します。
+          <br />
+          デフォルト項目に加えて、あなたのライフスタイルに沿ったカスタム項目を追加することが可能です。
+        </Typography>
+        <List
+          sx={{ border: 1, borderColor: "divider", borderRadius: 1, py: 0 }}
+        >
+          {budgetItems?.map((budgetItem, index) => (
+            <ListItem
+              key={budgetItem.id}
+              divider={index < budgetItems.length - 1}
+              secondaryAction={
+                budgetItem.operable ? (
+                  <Stack direction="row">
+                    <IconButton
+                      edge="end"
+                      aria-label="編集"
+                      onClick={() => {
+                        console.log("ダイアログを開く");
+                        setTarget(budgetItem);
+                      }}
+                    >
+                      <EditIcon />
                     </IconButton>
-                  </span>
-                </Tooltip>
-              )
-            }
-          >
-            <ListItemText
-              primary={
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  sx={{ alignItems: "center" }}
-                >
-                  <Typography sx={{ fontWeight: "bold" }}>
-                    {budgetItem.type === "fixed" ? (
-                      <Chip
-                        label="固定費"
-                        color="success"
-                        sx={{ mr: 2 }}
-                        size="small"
-                      />
-                    ) : (
-                      <Chip
-                        label="変動費"
-                        color="warning"
-                        sx={{ mr: 2 }}
-                        size="small"
-                      />
-                    )}
-                    {budgetItem.name}
-                  </Typography>
-                </Stack>
+                    <IconButton
+                      edge="end"
+                      aria-label="削除"
+                      onClick={() => {
+                        setIsDeleteDialog(true);
+                        setTarget(budgetItem);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Stack>
+                ) : (
+                  <Tooltip title="標準項目は編集・削除できません">
+                    <span>
+                      <IconButton edge="end" disabled>
+                        <LockIcon />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                )
               }
-            />
-          </ListItem>
-        ))}
+            >
+              <ListItemText
+                primary={
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{ alignItems: "center" }}
+                  >
+                    <Typography sx={{ fontWeight: "bold" }}>
+                      {budgetItem.type === "fixed" ? (
+                        <Chip
+                          label="固定費"
+                          color="success"
+                          sx={{ mr: 2 }}
+                          size="small"
+                        />
+                      ) : (
+                        <Chip
+                          label="変動費"
+                          color="warning"
+                          sx={{ mr: 2 }}
+                          size="small"
+                        />
+                      )}
+                      {budgetItem.name}
+                    </Typography>
+                  </Stack>
+                }
+              />
+            </ListItem>
+          ))}
 
-        {budgetItems?.length === 0 && (
-          <ListItem>
-            <ListItemText primary="項目がありません" />
-          </ListItem>
-        )}
-      </List>
+          {budgetItems?.length === 0 && (
+            <ListItem>
+              <ListItemText primary="項目がありません" />
+            </ListItem>
+          )}
+        </List>
+      </Stack>
 
       <AddBudgetItemDialog
         isOpen={isOpenCreateDialog}
