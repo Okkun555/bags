@@ -9,6 +9,7 @@ export const backendPaths = {
     budgetItem: {
       index: "/budget_items",
       create: "/budget_items",
+      delete: (id: number) => `/budget_items/${id}`,
     },
   },
 };

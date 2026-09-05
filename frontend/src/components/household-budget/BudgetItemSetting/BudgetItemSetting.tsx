@@ -18,13 +18,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useBudgetItems } from "@/repositories/household-budget/useBudgetItem";
 import { useState } from "react";
 import { AddBudgetItemDialog } from "../AddBudgetItemDialog";
-import { DeleteConfirmDialog } from "@/components/shared/DeleteConfirmDialog";
+import { DeleteConfirmDialog } from "../DeleteConfirmDialog/DeleteConfirmDialog";
+import type { BudgetItem } from "@/types/budgetItem";
 
 export const BudgetItemSetting = () => {
   const { budgetItems, isLoading } = useBudgetItems();
 
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState(false);
   const [isOpenDeleteDialog, setIsDeleteDialog] = useState(false);
+  const [target, setTarget] = useState<BudgetItem | null>(null);
 
   if (isLoading) {
     return (
@@ -66,14 +68,20 @@ export const BudgetItemSetting = () => {
                   <IconButton
                     edge="end"
                     aria-label="編集"
-                    onClick={() => console.log("ダイアログを開く")}
+                    onClick={() => {
+                      console.log("ダイアログを開く");
+                      setTarget(budgetItem);
+                    }}
                   >
                     <EditIcon fontSize="small" />
                   </IconButton>
                   <IconButton
                     edge="end"
                     aria-label="削除"
-                    onClick={() => setIsDeleteDialog(true)}
+                    onClick={() => {
+                      setIsDeleteDialog(true);
+                      setTarget(budgetItem);
+                    }}
                   >
                     <DeleteIcon fontSize="small" />
                   </IconButton>
@@ -116,10 +124,12 @@ export const BudgetItemSetting = () => {
       />
 
       <DeleteConfirmDialog
+        target={target} // 削除ダイアログが開く場合は、必ずtargetはsetされている
         isOpen={isOpenDeleteDialog}
-        handleClose={() => setIsDeleteDialog(false)}
-        handleDelete={() => console.log("削除")}
-        targetName="予算項目"
+        handleClose={() => {
+          setIsDeleteDialog(false);
+          setTarget(null);
+        }}
       />
     </Box>
   );

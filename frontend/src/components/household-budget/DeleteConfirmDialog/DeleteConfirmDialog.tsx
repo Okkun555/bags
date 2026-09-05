@@ -1,3 +1,5 @@
+import { useDeleteBudgetItem } from "@/repositories/household-budget/useBudgetItem";
+import type { BudgetItem } from "@/types/budgetItem";
 import {
   Button,
   Dialog,
@@ -9,24 +11,36 @@ import {
 import type { FC } from "react";
 
 type DeleteConfirmDialogProps = {
+  target: BudgetItem | null;
   isOpen: boolean;
   handleClose: () => void;
-  handleDelete: () => void;
-  targetName: string;
 };
 
 export const DeleteConfirmDialog: FC<DeleteConfirmDialogProps> = ({
+  target,
   isOpen,
   handleClose,
-  handleDelete,
-  targetName,
 }) => {
+  if (!target) {
+    return undefined;
+  }
+
+  const { deleteBudgetItem } = useDeleteBudgetItem(target.id);
+  const handleDelete = async () => {
+    await deleteBudgetItem();
+    handleClose();
+  };
+
   return (
     <Dialog open={isOpen} fullWidth>
-      <DialogTitle>{targetName}を削除しますか？</DialogTitle>
+      <DialogTitle>
+        カスタム予算項目「{target.name}」を削除しますか？
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           一度削除すると、データは復元できません。
+          <br />
+          登録済みの予算データは、項目なしとして表示されます。
         </DialogContentText>
       </DialogContent>
       <DialogActions>
