@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Chip,
   CircularProgress,
   IconButton,
   List,
@@ -73,7 +74,7 @@ export const BudgetItemSetting = () => {
                       setTarget(budgetItem);
                     }}
                   >
-                    <EditIcon fontSize="small" />
+                    <EditIcon />
                   </IconButton>
                   <IconButton
                     edge="end"
@@ -83,14 +84,14 @@ export const BudgetItemSetting = () => {
                       setTarget(budgetItem);
                     }}
                   >
-                    <DeleteIcon fontSize="small" />
+                    <DeleteIcon />
                   </IconButton>
                 </Stack>
               ) : (
                 <Tooltip title="標準項目は編集・削除できません">
                   <span>
                     <IconButton edge="end" disabled>
-                      <LockIcon fontSize="small" />
+                      <LockIcon />
                     </IconButton>
                   </span>
                 </Tooltip>
@@ -104,7 +105,24 @@ export const BudgetItemSetting = () => {
                   spacing={1}
                   sx={{ alignItems: "center" }}
                 >
-                  <Typography>{budgetItem.name}</Typography>
+                  <Typography sx={{ fontWeight: "bold" }}>
+                    {budgetItem.type === "fixed" ? (
+                      <Chip
+                        label="固定費"
+                        color="success"
+                        sx={{ mr: 2 }}
+                        size="small"
+                      />
+                    ) : (
+                      <Chip
+                        label="変動費"
+                        color="warning"
+                        sx={{ mr: 2 }}
+                        size="small"
+                      />
+                    )}
+                    {budgetItem.name}
+                  </Typography>
                 </Stack>
               }
             />

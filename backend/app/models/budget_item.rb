@@ -12,7 +12,14 @@ class BudgetItem < ApplicationRecord
   enum :type, { fixed: "fixed", variable: "variable" }, validate: true
 
   scope :default_items, -> { where(user_id: nil) }
-  scope :available_items, ->(user:) { where(user_id: [ nil, user.id ]) }
+  scope :available_items, ->(user:) {
+    where(user_id: [ nil, user.id ])
+      .order(
+        Arel.sql("CASE type WHEN 'fixed' THEN 0 ELSE 1 END"),
+        Arel.sql("CASE WHEN user_id IS NULL THEN 0 ELSE 1 END"),
+        :name,
+        )
+  }
 
   def custom?
     self.user.present?

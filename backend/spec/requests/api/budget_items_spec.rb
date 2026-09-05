@@ -20,10 +20,10 @@ RSpec.describe "Api::BudgetItems", type: :request do
         login_as(user)
       end
 
-      it "200とシステム標準 + ユーザーのカスタム予算項目一覧を返す" do
+      it "200とシステム標準 + ユーザーのカスタム予算項目一覧（固定費→変動費<default値が優先>）を返す" do
         subject
         expect(response).to have_http_status(:ok)
-        expect(response.parsed_body).to match_array([
+        expect(response.parsed_body).to eq([
                                                       {
                                                         "id" => default_budget_items1.id,
                                                         "name" => default_budget_items1.name,
@@ -31,16 +31,16 @@ RSpec.describe "Api::BudgetItems", type: :request do
                                                         "operable" => false
                                                       },
                                                       {
-                                                        "id" => default_budget_items2.id,
-                                                        "name" => default_budget_items2.name,
-                                                        "type" => "variable",
-                                                        "operable" => false
-                                                      },
-                                                      {
                                                         "id" => custom_budget_items1.id,
                                                         "name" => custom_budget_items1.name,
                                                         "type" => "fixed",
                                                         "operable" => true
+                                                      },
+                                                      {
+                                                        "id" => default_budget_items2.id,
+                                                        "name" => default_budget_items2.name,
+                                                        "type" => "variable",
+                                                        "operable" => false
                                                       },
                                                       {
                                                         "id" => custom_budget_items2.id,
