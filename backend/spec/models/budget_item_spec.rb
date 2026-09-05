@@ -1,6 +1,24 @@
 require 'rails_helper'
 
 RSpec.describe BudgetItem, type: :model do
+  describe "#custom?" do
+    context "デフォルト予算項目の場合" do
+      let(:default_item) { create(:budget_item, user: nil) }
+
+      it "falseを返す" do
+        expect(default_item.custom?).to be false
+      end
+    end
+
+    context "カスタム予算項目の場合" do
+      let(:custom_item) { create(:budget_item, user: create(:user)) }
+
+      it "trueを返す" do
+        expect(custom_item.custom?).to be true
+      end
+    end
+  end
+
   describe "システムがデフォルトで用意する予算項目の保護" do
     context "デフォルト項目の場合" do
       let!(:default_item) { create(:budget_item, user: nil) }

@@ -4,16 +4,19 @@ class BudgetItem < ApplicationRecord
 
   belongs_to :user, optional: true
 
+  validates :name, presence: true, length: { maximum: 100 }
+
+  before_update :forbidden_default_item_update, if: :default_item?
+  before_destroy :forbidden_default_item_destroy, if: :default_item?
+
   enum :type, { fixed: "fixed", variable: "variable" }, validate: true
 
   scope :default_items, -> { where(user_id: nil) }
   scope :available_items, ->(user:) { where(user_id: [ nil, user.id ]) }
 
-  validates :name, presence: true, length: { maximum: 100 }
-
-
-  before_update :forbidden_default_item_update, if: :default_item?
-  before_destroy :forbidden_default_item_destroy, if: :default_item?
+  def custom?
+    self.user.present?
+  end
 
   private
 
