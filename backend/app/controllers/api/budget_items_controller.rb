@@ -14,6 +14,15 @@ class Api::BudgetItemsController < ApplicationController
     end
   end
 
+  def destroy
+    budget_item = BudgetItem.find(params[:id])
+    authorize budget_item
+
+    if budget_item.destroy!
+      render json: BudgetItemSerializer.render_as_json(budget_item)
+    end
+  end
+
   private
 
   def budget_items_params

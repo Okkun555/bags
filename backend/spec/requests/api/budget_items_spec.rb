@@ -96,4 +96,38 @@ RSpec.describe "Api::BudgetItems", type: :request do
       it_behaves_like 'requires authentication'
     end
   end
+
+  describe "#destroy" do
+    subject { delete "/api/budget_items/#{budget_item.id}" }
+
+    let(:budget_item) { create(:budget_item, user:) }
+
+    context "ログイン済みの場合" do
+      before do
+        login_as(user)
+      end
+
+      context "デフォルト予算項目の場合" do
+        let!(:budget_item) { create(:budget_item, user: nil) }
+
+        it "データを削除せず、403を返す" do
+          expect { subject }.not_to change(BudgetItem, :count)
+          expect(response).to have_http_status(:forbidden)
+        end
+      end
+
+      context "カスタム予算項目の場合" do
+        let(:budget_item) { create(:budget_item, user: user) }
+
+        it "カスタム予算項目を削除し、200を返す" do
+          expect { subject }.to change(BudgetItem, :count).by(0)
+          expect(response).to have_http_status(:ok)
+        end
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
 end
