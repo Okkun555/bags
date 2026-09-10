@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
     resources :profiles, only: [ :create ]
     resources :budget_items
+    resources :monthly_plans
 
     post "signup", to: "auth#signup"
     post "login", to: "auth#login"

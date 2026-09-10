@@ -3,6 +3,8 @@ ja:
     models:
       user: "アカウント"
       profile: "プロフィール"
+      budget_item: "予算項目"
+      monthly_plan: "月次予算計画"
     attributes:
       profile:
         name: "アカウント名"
@@ -10,6 +12,12 @@ ja:
         date_of_birth: "生年月日"
         marital_status: "家族形態"
         income: "収入"
+      budget_item:
+        name: "項目名"
+        type: "項目種別"
+      monthly_plan:
+        title: "計画名"
+        description: "説明"
   errors:
     profile:
       already_exist: "アカウントに紐づくプロフィールが既に存在します。"
