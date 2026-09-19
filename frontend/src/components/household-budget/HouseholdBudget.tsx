@@ -2,15 +2,13 @@ import { Box, ListItemIcon } from "@mui/material";
 import { List, ListItemButton, ListItemText } from "@mui/material";
 import { WithHeaderLayout } from "../layouts/WithHeaderLayout";
 import { useState } from "react";
-import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
 import SettingsIcon from "@mui/icons-material/Settings";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import { BudgetList } from "./BudgetList";
 import { BudgetItemSetting } from "./BudgetItemSetting";
+import { MonthlyPlanList } from "./MonthlyPlanList";
 
 const MENU_ITEMS = [
   { label: "予算一覧", value: "list", icon: <FormatListBulletedIcon /> },
-  { label: "家計予算", value: "plan", icon: <FamilyRestroomIcon /> },
   { label: "予算項目設定", value: "item", icon: <SettingsIcon /> },
 ] as const;
 
@@ -43,7 +41,7 @@ export const HouseholdBudget = () => {
           </List>
         </Box>
         <Box sx={{ flexGrow: 1, ml: 3, mt: 1 }}>
-          {selected === "list" && <BudgetList />}
+          {selected === "list" && <MonthlyPlanList />}
           {selected === "item" && <BudgetItemSetting />}
         </Box>
       </Box>
