@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
   include Authenticatable
   include ActionController::Cookies
   include Pundit::Authorization
+  include Pagy::Method
 
   before_action :authorize_request
 

@@ -3,6 +3,86 @@ require 'rails_helper'
 RSpec.describe "Api::MonthlyPlans", type: :request do
   let(:user) { create(:user) }
 
+  describe "GET /api/monthly_plans" do
+    subject { get "/api/monthly_plans", params: }
+
+    let(:params) { { page: 1 } }
+
+    context "ログイン済みの場合" do
+      before do
+        login_as(user)
+      end
+
+      context "レスポンスの検証" do
+        let!(:monthly_plan_1) { create(:monthly_plan, user:) }
+        let!(:monthly_plan_2) { create(:monthly_plan, user:) }
+        let!(:monthly_plan_3) { create(:monthly_plan, user:) }
+        let!(:monthly_plan_by_other_user) { create(:monthly_plan, user: create(:user))  }
+
+        it "ログイン済みユーザーの月次予算計画一覧と200を返す" do
+          subject
+          expect(response).to have_http_status(:ok)
+          expect(response.parsed_body).to eq({
+                                               "data" => [
+                                                 {
+                                                   "id" => monthly_plan_3.id,
+                                                   "title" => monthly_plan_3.title,
+                                                   "description" => monthly_plan_3.description,
+                                                   "created_at" => monthly_plan_3.created_at&.iso8601(3),
+                                                   "updated_at" => monthly_plan_3.updated_at&.iso8601(3)
+                                                 },
+                                                 {
+                                                   "id" => monthly_plan_2.id,
+                                                   "title" => monthly_plan_2.title,
+                                                   "description" => monthly_plan_2.description,
+                                                   "created_at" => monthly_plan_2.created_at&.iso8601(3),
+                                                   "updated_at" => monthly_plan_2.updated_at&.iso8601(3)
+                                                 },
+                                                 {
+                                                   "id" => monthly_plan_1.id,
+                                                   "title" => monthly_plan_1.title,
+                                                   "description" => monthly_plan_1.description,
+                                                   "created_at" => monthly_plan_1.created_at&.iso8601(3),
+                                                   "updated_at" => monthly_plan_1.updated_at&.iso8601(3)
+                                                 }
+                                               ],
+                                               "pagination" => {
+                                                 "current_page" => 1,
+                                                 "per_page" => 20,
+                                                 "total_count" => 3,
+                                                 "total_pages" => 1
+                                               }
+                                             })
+        end
+      end
+
+      context "ページネーションの検証" do
+        let!(:monthly_plans) do
+          create_list(:monthly_plan, 21, user:)
+        end
+        let(:params) { { page: 2 } }
+
+        it "2ページ目は残り1件を返す" do
+          subject
+
+          body = response.parsed_body
+
+          expect(body["data"].size).to eq(1)
+          expect(body["pagination"]).to eq({
+                                             "current_page" => 2,
+                                             "per_page" => 20,
+                                             "total_count" => 21,
+                                             "total_pages" => 2
+                                           })
+        end
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
+
   describe "POST /api/monthly_plans" do
     subject { post "/api/monthly_plans", params: }
 
@@ -51,8 +131,8 @@ RSpec.describe "Api::MonthlyPlans", type: :request do
                                                           "detail" => {
                                                             "title" => [
                                                               {
-                                                                "message" => "計画名はすでに存在します",
-                                                              },
+                                                                "message" => "計画名はすでに存在します"
+                                                              }
                                                             ]
                                                           }
                                                         })
