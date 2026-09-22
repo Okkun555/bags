@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_07_125524) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_22_095123) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,6 +23,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_125524) do
     t.index ["user_id", "name"], name: "index_budget_items_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_budget_items_on_user_id"
     t.check_constraint "type::text = ANY (ARRAY['fixed'::character varying, 'variable'::character varying]::text[])", name: "budget_items_type_check"
+  end
+
+  create_table "household_budgets", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "income", null: false, comment: "収入"
+    t.bigint "monthly_plan_id", null: false
+    t.string "relationship", default: "me", null: false, comment: "続柄"
+    t.datetime "updated_at", null: false
+    t.index ["monthly_plan_id"], name: "index_household_budgets_on_monthly_plan_id"
+    t.check_constraint "relationship::text = ANY (ARRAY['me'::character varying, 'spouse'::character varying, 'father'::character varying, 'mother'::character varying, 'child'::character varying, 'other'::character varying]::text[])", name: "household_budgets_relationship_check"
+  end
+
+  create_table "monthly_plan_details", force: :cascade do |t|
+    t.integer "amount", default: 0, null: false, comment: "金額"
+    t.bigint "budget_item_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "monthly_plan_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["budget_item_id"], name: "index_monthly_plan_details_on_budget_item_id"
+    t.index ["monthly_plan_id", "budget_item_id"], name: "idx_on_monthly_plan_id_budget_item_id_4009ba7ee0", unique: true
+    t.index ["monthly_plan_id"], name: "index_monthly_plan_details_on_monthly_plan_id"
+    t.check_constraint "amount >= 0", name: "monthly_plan_details_amount_check"
   end
 
   create_table "monthly_plans", force: :cascade do |t|
@@ -78,6 +100,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_125524) do
   end
 
   add_foreign_key "budget_items", "users"
+  add_foreign_key "household_budgets", "monthly_plans"
+  add_foreign_key "monthly_plan_details", "budget_items"
+  add_foreign_key "monthly_plan_details", "monthly_plans"
   add_foreign_key "monthly_plans", "users"
   add_foreign_key "profiles", "occupations"
   add_foreign_key "profiles", "prefectures"
