@@ -2,6 +2,7 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import { AddMonthlyPlanDialog } from "./AddMonthlyPlanDialog";
+import { MonthlyPlanTable } from "./MonthlyPlanTable";
 
 export const MonthlyPlanList = () => {
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState<boolean>(false);
@@ -34,6 +35,7 @@ export const MonthlyPlanList = () => {
           </Button>
         </Stack>
       </Box>
+      <MonthlyPlanTable />
       <AddMonthlyPlanDialog
         isOpen={isOpenCreateDialog}
         handleClose={() => setIsOpenCreateDialog(false)}

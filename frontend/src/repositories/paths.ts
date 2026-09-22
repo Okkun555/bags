@@ -7,6 +7,7 @@ export const backendPaths = {
   },
   householdBudget: {
     monthlyPlan: {
+      index: "/monthly_plans",
       create: "/monthly_plans",
     },
     budgetItem: {
