@@ -8,5 +8,5 @@ class HouseholdBudget < ApplicationRecord
     mother: "mother", # 母
     child: "child", # 子
     other: "other" # その他
-  }, _default: "me"
+  }
 end
