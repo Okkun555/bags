@@ -8,6 +8,13 @@ class Api::MonthlyPlansController < ApplicationController
     }, status: :ok
   end
 
+  def show
+    monthly_plan = policy_scope(MonthlyPlan).find(params[:id])
+    authorize monthly_plan
+
+    render json: MonthlyPlanSerializer.render_as_json(monthly_plan, view: :detail), status: :ok
+  end
+
   def create
     monthly_plan = current_user.monthly_plans.build(monthly_plan_params)
     authorize monthly_plan

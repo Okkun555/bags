@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::MonthlyPlans", type: :request do
   let(:user) { create(:user) }
 
-  describe "GET /api/monthly_plans" do
+  describe "#index" do
     subject { get "/api/monthly_plans", params: }
 
     let(:params) { { page: 1 } }
@@ -83,7 +83,49 @@ RSpec.describe "Api::MonthlyPlans", type: :request do
     end
   end
 
-  describe "POST /api/monthly_plans" do
+  describe "#show" do
+    subject { get "/api/monthly_plans/#{monthly_plan.id}" }
+
+    let(:monthly_plan) { create(:monthly_plan, user:) }
+
+    context "ログイン済みの場合" do
+      before do
+        login_as(user)
+      end
+
+      context "自分の予算計画の場合" do
+        context "詳細情報作成前の場合" do
+          it "月次予算計画の詳細と200を返す" do
+            subject
+            expect(response).to have_http_status(:ok)
+            expect(response.parsed_body).to eq({
+                                                 "id" => monthly_plan.id,
+                                                 "title" => monthly_plan.title,
+                                                 "description" => monthly_plan.description,
+                                                 "created_at" => monthly_plan.created_at.iso8601(3),
+                                                 "updated_at" => monthly_plan.updated_at.iso8601(3),
+                                                 "household_budgets" => []
+                                               })
+          end
+        end
+      end
+
+      context "他人の予算計画の場合" do
+        let(:monthly_plan) { create(:monthly_plan, user: create(:user)) }
+
+        it "404を返す" do
+          subject
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
+
+  describe "#create" do
     subject { post "/api/monthly_plans", params: }
 
     let(:params) do
