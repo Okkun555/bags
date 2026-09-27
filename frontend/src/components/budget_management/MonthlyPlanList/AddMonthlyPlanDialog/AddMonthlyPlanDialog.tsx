@@ -15,7 +15,7 @@ import {
   type AddMonthlyPlanForm,
 } from "./useAddMonthlyPlan";
 import { Controller } from "react-hook-form";
-import { usePostMonthlyPlan } from "@/repositories/household-budget/useMonthlyPlan";
+import { usePostMonthlyPlan } from "@/repositories/budget-management/useMonthlyPlan";
 
 type AddMonthlyPlanDialogProps = {
   isOpen: boolean;

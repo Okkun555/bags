@@ -5,9 +5,10 @@ export const backendPaths = {
   prefecture: {
     index: "/prefectures",
   },
-  householdBudget: {
+  budgetManagement: {
     monthlyPlan: {
       index: "/monthly_plans",
+      show: (id: number) => `/monthly_plans/${id}`,
       create: "/monthly_plans",
     },
     budgetItem: {

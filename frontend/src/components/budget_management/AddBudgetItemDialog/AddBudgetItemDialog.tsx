@@ -20,7 +20,7 @@ import {
   useAddBudgetItem,
   type AddBudgetItemForm,
 } from "./useAddBudgetItem";
-import { usePostBudgetItem } from "@/repositories/household-budget/useBudgetItem";
+import { usePostBudgetItem } from "@/repositories/budget-management/useBudgetItem";
 
 type AddBudgetItemDialogProps = {
   isOpen: boolean;

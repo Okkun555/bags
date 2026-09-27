@@ -16,7 +16,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import { useBudgetItems } from "@/repositories/household-budget/useBudgetItem";
+import { useBudgetItems } from "@/repositories/budget-management/useBudgetItem";
 import { useState } from "react";
 import { AddBudgetItemDialog } from "../AddBudgetItemDialog";
 import { DeleteConfirmDialog } from "../DeleteConfirmDialog/DeleteConfirmDialog";

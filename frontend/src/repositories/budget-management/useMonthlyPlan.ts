@@ -5,15 +5,28 @@ import { backendPaths } from "../paths";
 import { fetcher, postRequest } from "@/libs/api/client";
 import useSWR from "swr";
 import type { GetMonthlyPlansResponse } from "@/types/apiResponse";
+import type { MonthlyPlanDetail } from "@/types/budgetManagement";
 
 export const useGetMonthlyPlans = () => {
   const { data, isLoading } = useSWR<GetMonthlyPlansResponse>(
-    backendPaths.householdBudget.monthlyPlan.index,
+    backendPaths.budgetManagement.monthlyPlan.index,
     fetcher,
   );
 
   return {
     monthlyPlans: data?.data,
+    isLoading,
+  };
+};
+
+export const useGetMonthlyPlan = (id: number) => {
+  const { data, isLoading } = useSWR<MonthlyPlanDetail>(
+    backendPaths.budgetManagement.monthlyPlan.show(id),
+    fetcher,
+  );
+
+  return {
+    monthlyPlan: data,
     isLoading,
   };
 };
@@ -24,7 +37,7 @@ export const usePostMonthlyPlan = () => {
     Error,
     string,
     AddMonthlyPlanForm
-  >(backendPaths.householdBudget.monthlyPlan.create, postRequest, {
+  >(backendPaths.budgetManagement.monthlyPlan.create, postRequest, {
     onSuccess: async () => {},
   });
 

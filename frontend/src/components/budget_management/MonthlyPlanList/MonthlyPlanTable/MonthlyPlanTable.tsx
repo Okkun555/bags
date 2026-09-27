@@ -1,5 +1,5 @@
 import { FormattedDay } from "@/components/shared/FormattedDay";
-import { useGetMonthlyPlans } from "@/repositories/household-budget/useMonthlyPlan";
+import { useGetMonthlyPlans } from "@/repositories/budget-management/useMonthlyPlan";
 import {
   Button,
   CircularProgress,

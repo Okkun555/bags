@@ -1,4 +1,4 @@
-import { useDeleteBudgetItem } from "@/repositories/household-budget/useBudgetItem";
+import { useDeleteBudgetItem } from "@/repositories/budget-management/useBudgetItem";
 import type { BudgetItem } from "@/types/budgetItem";
 import {
   Button,
