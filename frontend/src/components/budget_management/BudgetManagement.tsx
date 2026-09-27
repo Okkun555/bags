@@ -8,11 +8,11 @@ import { BudgetItemSetting } from "./BudgetItemSetting";
 import { MonthlyPlanList } from "./MonthlyPlanList";
 
 const MENU_ITEMS = [
-  { label: "予算一覧", value: "list", icon: <FormatListBulletedIcon /> },
+  { label: "月次予算計画", value: "list", icon: <FormatListBulletedIcon /> },
   { label: "予算項目設定", value: "item", icon: <SettingsIcon /> },
 ] as const;
 
-export const HouseholdBudget = () => {
+export const BudgetManagement = () => {
   const [selected, setSelected] =
     useState<(typeof MENU_ITEMS)[number]["value"]>("list");
 

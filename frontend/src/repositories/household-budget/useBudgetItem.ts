@@ -3,7 +3,7 @@ import { deleteRequest, fetcher, postRequest } from "@/libs/api/client";
 import useSWR, { mutate } from "swr";
 import type { BudgetItem, BudgetItems } from "@/types/budgetItem";
 import useSWRMutation from "swr/mutation";
-import type { AddBudgetItemForm } from "@/components/household-budget/AddBudgetItemDialog/useAddBudgetItem";
+import type { AddBudgetItemForm } from "@/components/budget_management/AddBudgetItemDialog/useAddBudgetItem";
 
 export const useBudgetItems = () => {
   const { data, isLoading, error } = useSWR<BudgetItems>(

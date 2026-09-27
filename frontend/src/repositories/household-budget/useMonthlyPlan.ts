@@ -1,4 +1,4 @@
-import type { AddMonthlyPlanForm } from "@/components/household-budget/MonthlyPlanList/AddMonthlyPlanDialog/useAddMonthlyPlan";
+import type { AddMonthlyPlanForm } from "@/components/budget_management/MonthlyPlanList/AddMonthlyPlanDialog/useAddMonthlyPlan";
 import type { MonthlyPlan } from "@/types/monthlyPlan";
 import useSWRMutation from "swr/mutation";
 import { backendPaths } from "../paths";
