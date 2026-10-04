@@ -8,12 +8,12 @@ import { Navigate, Route, Routes as RouterRoutes } from "react-router";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import { BudgetManagementLayout } from "@/components/budget-management";
 import { MonthlyPlanList } from "@/components/budget-management/MonthlyPlanList";
+import { MonthlyPlanDetail } from "@/components/budget-management/MonthlyPlanDetail";
 import { BudgetItemSetting } from "@/components/budget-management/BudgetItemSetting";
 
 export default function Routes() {
   return (
     <RouterRoutes>
-      {/* 未ログイン時のルーティング */}
       <Route element={<GuestRoute />}>
         <Route path={paths.auth.signup} element={<Signup />} />
         <Route path={paths.auth.login} element={<Login />} />
@@ -33,6 +33,10 @@ export default function Routes() {
           <Route
             path={paths.budgetManagement.monthlyPlans}
             element={<MonthlyPlanList />}
+          />
+          <Route
+            path={paths.budgetManagement.monthlyPlanDetailPattern}
+            element={<MonthlyPlanDetail />}
           />
           <Route
             path={paths.budgetManagement.budgetItem}

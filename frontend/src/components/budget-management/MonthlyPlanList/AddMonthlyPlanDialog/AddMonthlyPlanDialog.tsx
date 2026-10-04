@@ -16,6 +16,8 @@ import {
   type AddMonthlyPlanForm,
 } from "./useAddMonthlyPlanDialog";
 import { Controller } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { paths } from "@/routes/paths";
 
 type Props = {
   isOpen: boolean;
@@ -25,11 +27,15 @@ type Props = {
 export const AddMonthlyPlanDialog: FC<Props> = ({ isOpen, handleClose }) => {
   const { reset, control, handleSubmit, errors } = useAddMonthlyPlanDialog();
   const { postMonthlyPlan } = usePostMonthlyPlan();
+  const navigate = useNavigate();
 
   const onSubmit = async (data: AddMonthlyPlanForm) => {
-    await postMonthlyPlan(data);
-    reset();
-    handleClose();
+    const monthlyPlan = await postMonthlyPlan(data);
+    if (monthlyPlan) {
+      reset();
+      handleClose();
+      navigate(paths.budgetManagement.monthlyPlanDetail(monthlyPlan.id));
+    }
   };
 
   return (

@@ -7,6 +7,7 @@ type HouseholdBudget = {
 type Relationship = "me" | "spouse" | "father" | "mother" | "child" | "other";
 
 export type MonthlyPlan = {
+  id: number;
   title: string;
   description: string | null;
   createdAt: string;

@@ -10,6 +10,7 @@ export const paths = {
   budgetManagement: {
     monthlyPlans: "/budget-management/monthly-plans",
     monthlyPlanDetail: (id: number) => `/budget-management/monthly-plans/${id}`,
+    monthlyPlanDetailPattern: "/budget-management/monthly-plans/:id",
     budgetItem: "/budget-management/items",
   },
 } as const;
