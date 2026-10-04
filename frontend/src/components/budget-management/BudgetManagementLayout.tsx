@@ -1,29 +1,35 @@
-import { Box, ListItemIcon } from "@mui/material";
-import { List, ListItemButton, ListItemText } from "@mui/material";
-import { WithHeaderLayout } from "../layouts/WithHeaderLayout";
-import SettingsIcon from "@mui/icons-material/Settings";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { Link, Outlet, useLocation } from "react-router";
+import { WithHeaderLayout } from "../layouts/WithHeaderLayout";
+import {
+  Box,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import { paths } from "../routes/paths";
+
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const MENU_ITEMS = [
   {
-    label: "月次予算計画",
+    label: "計画一覧",
     to: paths.budgetManagement.monthlyPlans,
     icon: <FormatListBulletedIcon />,
   },
   {
-    label: "予算項目設定",
+    label: "項目設定",
     to: paths.budgetManagement.budgetItem,
     icon: <SettingsIcon />,
   },
 ] as const;
 
-export const HouseholdBudgetLayout = () => {
-  const { pathname } = useLocation();
+export const BudgetManagementLayout = () => {
+  const location = useLocation();
 
   return (
-    <WithHeaderLayout pageTitle="家計管理">
+    <WithHeaderLayout pageTitle="予算計画の管理">
       <Box sx={{ display: "flex" }}>
         <Box
           sx={{
@@ -39,7 +45,7 @@ export const HouseholdBudgetLayout = () => {
                 key={item.to}
                 component={Link}
                 to={item.to}
-                selected={pathname.startsWith(item.to)}
+                selected={location.pathname.startsWith(item.to)}
               >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.label} />

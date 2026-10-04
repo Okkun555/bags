@@ -9,24 +9,21 @@ import {
   TextField,
 } from "@mui/material";
 
+import { usePostMonthlyPlan } from "@/repositories/budget-management/monthlyPlansRepository";
 import type { FC } from "react";
 import {
-  useAddMonthlyPlan,
+  useAddMonthlyPlanDialog,
   type AddMonthlyPlanForm,
-} from "./useAddMonthlyPlan";
+} from "./useAddMonthlyPlanDialog";
 import { Controller } from "react-hook-form";
-import { usePostMonthlyPlan } from "@/repositories/budget-management/useMonthlyPlan";
 
-type AddMonthlyPlanDialogProps = {
+type Props = {
   isOpen: boolean;
   handleClose: () => void;
 };
 
-export const AddMonthlyPlanDialog: FC<AddMonthlyPlanDialogProps> = ({
-  isOpen,
-  handleClose,
-}) => {
-  const { reset, control, handleSubmit, errors } = useAddMonthlyPlan();
+export const AddMonthlyPlanDialog: FC<Props> = ({ isOpen, handleClose }) => {
+  const { reset, control, handleSubmit, errors } = useAddMonthlyPlanDialog();
   const { postMonthlyPlan } = usePostMonthlyPlan();
 
   const onSubmit = async (data: AddMonthlyPlanForm) => {

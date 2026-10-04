@@ -1,5 +1,5 @@
-import { useDeleteBudgetItem } from "@/repositories/budget-management/useBudgetItem";
-import type { BudgetItem } from "@/types/budgetItem";
+import { useDeleteBudgetItem } from "@/repositories/budget-management/budgetItemsRepository";
+import type { BudgetItem } from "@/types/budgetManagement";
 import {
   Button,
   Dialog,
@@ -10,13 +10,13 @@ import {
 } from "@mui/material";
 import type { FC } from "react";
 
-type DeleteConfirmDialogProps = {
+type Props = {
   target: BudgetItem | null;
   isOpen: boolean;
   handleClose: () => void;
 };
 
-export const DeleteConfirmDialog: FC<DeleteConfirmDialogProps> = ({
+export const DeleteConfirmDialog: FC<Props> = ({
   target,
   isOpen,
   handleClose,
@@ -26,6 +26,7 @@ export const DeleteConfirmDialog: FC<DeleteConfirmDialogProps> = ({
   }
 
   const { deleteBudgetItem } = useDeleteBudgetItem(target.id);
+
   const handleDelete = async () => {
     await deleteBudgetItem();
     handleClose();

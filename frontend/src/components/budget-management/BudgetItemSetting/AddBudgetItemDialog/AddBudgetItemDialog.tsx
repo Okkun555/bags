@@ -1,3 +1,10 @@
+import type { FC } from "react";
+import {
+  BUDGET_ITEM_TYPE,
+  useAddBudgetItem,
+  type AddBudgetItemForm,
+} from "./useAddBudgetItem";
+import { usePostBudgetItem } from "@/repositories/budget-management/budgetItemsRepository";
 import {
   Box,
   Button,
@@ -13,40 +20,32 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import type { FC } from "react";
 import { Controller } from "react-hook-form";
-import {
-  BUDGET_ITEM_TYPE,
-  useAddBudgetItem,
-  type AddBudgetItemForm,
-} from "./useAddBudgetItem";
-import { usePostBudgetItem } from "@/repositories/budget-management/useBudgetItem";
 
-type AddBudgetItemDialogProps = {
+type Props = {
   isOpen: boolean;
   handleClose: () => void;
 };
 
-export const AddBudgetItemDialog: FC<AddBudgetItemDialogProps> = ({
-  isOpen,
-  handleClose,
-}) => {
+export const AddBudgetItemDialog: FC<Props> = ({ isOpen, handleClose }) => {
   const { control, handleSubmit, errors } = useAddBudgetItem();
 
-  const { postBudgetItem } = usePostBudgetItem();
+  const { createBudgetItem } = usePostBudgetItem();
   const onSubmit = async (data: AddBudgetItemForm) => {
-    await postBudgetItem(data);
+    await createBudgetItem(data);
     handleClose();
   };
 
   return (
     <Dialog open={isOpen} onClose={handleClose}>
-      <DialogTitle>カスタム予算項目の追加</DialogTitle>
+      <DialogTitle>予算項目の追加</DialogTitle>
+
       <Box component="form" sx={{ mt: 3 }} onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <DialogContentText>
             標準項目以外で管理したい家計予算の項目をカスタムできます。
           </DialogContentText>
+
           <Stack spacing={3}>
             <Controller
               control={control}

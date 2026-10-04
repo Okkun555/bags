@@ -3,7 +3,7 @@ import z from "zod";
 
 export type AddMonthlyPlanForm = z.infer<typeof schema>;
 
-export const useAddMonthlyPlan = () => {
+export const useAddMonthlyPlanDialog = () => {
   const {
     reset,
     control,

@@ -1,5 +1,5 @@
 import { FormattedDay } from "@/components/shared/FormattedDay";
-import { useGetMonthlyPlans } from "@/repositories/budget-management/useMonthlyPlan";
+import { useFetchMonthlyPlans } from "@/repositories/budget-management/monthlyPlansRepository";
 import {
   Button,
   CircularProgress,
@@ -13,10 +13,10 @@ import {
 } from "@mui/material";
 
 export const MonthlyPlanTable = () => {
-  const { monthlyPlans, isLoading } = useGetMonthlyPlans();
+  const { monthlyPlans, isLoading } = useFetchMonthlyPlans();
 
   if (isLoading) {
-    return <CircularProgress />;
+    return <CircularProgress size={32} />;
   }
 
   return (

@@ -1,3 +1,4 @@
+import type { BudgetItems } from "./budgetManagement";
 import type { MonthlyPlan } from "./monthlyPlan";
 import type { Profile, User } from "./user";
 
@@ -17,16 +18,28 @@ export type OccupationsResponse = {};
 // プロフィール
 export type ProfileCreateResponse = Profile;
 
-// 月次計画
+/**
+ * 予算管理（BudgetManagement）
+ */
 export type GetMonthlyPlansResponse = {
   data: Array<MonthlyPlan>;
-  pagination: Pagination;
+  pagination: {
+    currentPage: number;
+    perPage: number;
+    totalPages: number;
+    totalCount: number;
+  };
 };
 
-// 共通型
-type Pagination = {
-  currentPage: number;
-  perPage: number;
-  totalPages: number;
-  totalCount: number;
+/**
+ * ページネーション付きAPIの共通型
+ */
+export type GetListWithPagination<T> = {
+  data: Array<T>;
+  pagination: {
+    currentPage: number;
+    perPage: number;
+    totalPages: number;
+    totalCount: number;
+  };
 };

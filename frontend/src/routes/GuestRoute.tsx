@@ -6,7 +6,7 @@ export const GuestRoute = () => {
   const { currentUser, isLoading } = useAuth();
 
   if (isLoading) {
-    return <CircularProgress />;
+    return <CircularProgress size={32} />;
   }
 
   if (currentUser && currentUser.userId) {

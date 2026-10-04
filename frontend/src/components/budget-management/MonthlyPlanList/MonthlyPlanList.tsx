@@ -1,11 +1,16 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
+
+import { Box, Button, Stack, Typography } from "@mui/material";
+
+import AddIcon from "@mui/icons-material/Add";
 import { AddMonthlyPlanDialog } from "./AddMonthlyPlanDialog";
 import { MonthlyPlanTable } from "./MonthlyPlanTable";
 
 export const MonthlyPlanList = () => {
   const [isOpenCreateDialog, setIsOpenCreateDialog] = useState<boolean>(false);
+
+  const handleOpenDialog = () => setIsOpenCreateDialog(true);
+  const handleCloseDialog = () => setIsOpenCreateDialog(false);
 
   return (
     <>
@@ -24,12 +29,12 @@ export const MonthlyPlanList = () => {
           }}
         >
           <Typography variant="body1">
-            今まで計画した、1ヶ月の家計予算を管理できます。
+            あなたが今まで作成した、1ヶ月の家計予算を管理できます。
           </Typography>
           <Button
             startIcon={<AddIcon />}
             variant="outlined"
-            onClick={() => setIsOpenCreateDialog(true)}
+            onClick={handleOpenDialog}
           >
             新規作成
           </Button>
@@ -38,7 +43,7 @@ export const MonthlyPlanList = () => {
       <MonthlyPlanTable />
       <AddMonthlyPlanDialog
         isOpen={isOpenCreateDialog}
-        handleClose={() => setIsOpenCreateDialog(false)}
+        handleClose={handleCloseDialog}
       />
     </>
   );

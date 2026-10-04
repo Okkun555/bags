@@ -1,4 +1,3 @@
-// TODO: keyのバッティング問題を解決する
 export const paths = {
   auth: {
     signup: "/signup",

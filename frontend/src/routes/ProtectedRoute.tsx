@@ -1,14 +1,14 @@
 import { useAuth } from "@/providers/AuthProvider";
 import { CircularProgress } from "@mui/material";
 import { Navigate, Outlet, useLocation } from "react-router";
-import { paths } from "./paths";
+import { paths } from "../components/routes/paths";
 
 export const ProtectedRoute = () => {
   const { currentUser, isLoading } = useAuth();
   const location = useLocation();
 
   if (isLoading) {
-    return <CircularProgress />;
+    return <CircularProgress size={32} />;
   }
 
   if (!currentUser || !currentUser.userId) {
