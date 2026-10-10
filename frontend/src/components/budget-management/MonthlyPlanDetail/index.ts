@@ -1,1 +1,1 @@
-export { MonthlyPlanDetail } from "./MonthlyPlanDetails";
+export { MonthlyPlanDetail } from "./MonthlyPlanDetail";

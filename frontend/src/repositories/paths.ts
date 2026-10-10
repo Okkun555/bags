@@ -16,5 +16,8 @@ export const backendPaths = {
       create: "/budget_items",
       delete: (id: number) => `/budget_items/${id}`,
     },
+    householdBudget: {
+      put: (id: number) => `monthly_plans/${id}/household_budgets`,
+    },
   },
 };
