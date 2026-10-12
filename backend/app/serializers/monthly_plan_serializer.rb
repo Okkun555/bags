@@ -4,6 +4,11 @@ class MonthlyPlanSerializer < Blueprinter::Base
 
   view :detail do
     # association :budget_items, blueprint: BudgetItemSerializer
+
     association :household_budgets, blueprint: HouseholdBudgetSerializer
+
+    field :total_income do |option|
+      option.household_budgets.sum(&:income)
+    end
   end
 end

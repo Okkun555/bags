@@ -104,7 +104,38 @@ RSpec.describe "Api::MonthlyPlans", type: :request do
                                                  "description" => monthly_plan.description,
                                                  "created_at" => monthly_plan.created_at.iso8601(3),
                                                  "updated_at" => monthly_plan.updated_at.iso8601(3),
-                                                 "household_budgets" => []
+                                                 "household_budgets" => [],
+                                                 "total_income" => 0,
+                                               })
+          end
+        end
+
+        context "詳細情報作成後の場合" do
+          let!(:household_budget) { create(:household_budget, monthly_plan: monthly_plan, income: 100_000) }
+          let!(:household_budget2) { create(:household_budget, :father, monthly_plan: monthly_plan, income: 200_000) }
+
+          it "月次予算計画の詳細と200を返す" do
+            subject
+            expect(response).to have_http_status(:ok)
+            expect(response.parsed_body).to eq({
+                                                 "id" => monthly_plan.id,
+                                                 "title" => monthly_plan.title,
+                                                 "description" => monthly_plan.description,
+                                                 "created_at" => monthly_plan.created_at.iso8601(3),
+                                                 "updated_at" => monthly_plan.updated_at.iso8601(3),
+                                                 "household_budgets" => [
+                                                   {
+                                                     "id" => household_budget.id,
+                                                     "relationship" => "me",
+                                                     "income" => 100_000,
+                                                   },
+                                                   {
+                                                     "id" => household_budget2.id,
+                                                     "relationship" => "father",
+                                                     "income" => 200_000,
+                                                   }
+                                                 ],
+                                                 "total_income" => 300_000,
                                                })
           end
         end
