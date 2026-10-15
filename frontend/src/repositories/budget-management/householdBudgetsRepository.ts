@@ -1,4 +1,4 @@
-import type { HouseholdBudgetFormValues } from "@/components/budget-management/MonthlyPlanDetail/HouseholdBudgetEditDialog/useHouseholdBudgetEditDialog";
+import type { HouseholdBudgetFormValues } from "@/components/budget-management/MonthlyPlanShow/HouseholdBudgetEditDialog/useHouseholdBudgetEditDialog";
 import type { MonthlyPlan } from "@/types/budgetManagement";
 import useSWRMutation from "swr/mutation";
 import { backendPaths } from "../paths";

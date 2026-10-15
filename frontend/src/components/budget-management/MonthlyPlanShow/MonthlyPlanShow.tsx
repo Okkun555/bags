@@ -3,7 +3,7 @@ import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router";
 import { HouseholdBudgetSection } from "./HouseholdBudgetSection";
 
-export const MonthlyPlanDetail = () => {
+export const MonthlyPlanShow = () => {
   const { id } = useParams<{ id: string }>();
   const { monthlyPlanDetail, isLoading } = useFetchMonthPlanDetail(Number(id));
 
@@ -23,7 +23,9 @@ export const MonthlyPlanDetail = () => {
 
       <Stack spacing={2} sx={{ mt: 2 }}>
         {monthlyPlanDetail && (
-          <HouseholdBudgetSection monthlyPlanDetail={monthlyPlanDetail} />
+          <>
+            <HouseholdBudgetSection monthlyPlanDetail={monthlyPlanDetail} />
+          </>
         )}
         {/* <HouseholdBudgetSection monthlyPlanId={monthlyPlanId} /> */}
         {/* 今後: <BudgetItemSection monthlyPlanId={monthlyPlanId} /> */}

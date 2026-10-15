@@ -45,7 +45,7 @@ export const MonthlyPlanTable = () => {
               <TableCell>
                 <Button
                   component={RouterLink}
-                  to={paths.budgetManagement.monthlyPlanDetail(monthlyPlan.id)}
+                  to={paths.budgetManagement.monthlyPlanShow(monthlyPlan.id)}
                   variant="contained"
                   color="inherit"
                 >

@@ -8,7 +8,7 @@ import { Navigate, Route, Routes as RouterRoutes } from "react-router";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
 import { BudgetManagementLayout } from "@/components/budget-management";
 import { MonthlyPlanList } from "@/components/budget-management/MonthlyPlanList";
-import { MonthlyPlanDetail } from "@/components/budget-management/MonthlyPlanDetail";
+import { MonthlyPlanShow } from "@/components/budget-management/MonthlyPlanShow";
 import { BudgetItemSetting } from "@/components/budget-management/BudgetItemSetting";
 
 export default function Routes() {
@@ -35,8 +35,8 @@ export default function Routes() {
             element={<MonthlyPlanList />}
           />
           <Route
-            path={paths.budgetManagement.monthlyPlanDetailPattern}
-            element={<MonthlyPlanDetail />}
+            path={paths.budgetManagement.monthlyPlanShowPattern}
+            element={<MonthlyPlanShow />}
           />
           <Route
             path={paths.budgetManagement.budgetItem}

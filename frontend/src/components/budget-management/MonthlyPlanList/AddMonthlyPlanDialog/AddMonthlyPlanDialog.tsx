@@ -34,7 +34,7 @@ export const AddMonthlyPlanDialog: FC<Props> = ({ isOpen, handleClose }) => {
     if (monthlyPlan) {
       reset();
       handleClose();
-      navigate(paths.budgetManagement.monthlyPlanDetail(monthlyPlan.id));
+      navigate(paths.budgetManagement.monthlyPlanShow(monthlyPlan.id));
     }
   };
 
