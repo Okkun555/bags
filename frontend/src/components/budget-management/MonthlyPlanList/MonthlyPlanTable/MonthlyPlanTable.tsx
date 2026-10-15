@@ -1,5 +1,6 @@
 import { FormattedDay } from "@/components/shared/FormattedDay";
 import { useFetchMonthlyPlans } from "@/repositories/budget-management/monthlyPlansRepository";
+import { paths } from "@/routes/paths";
 import {
   Button,
   CircularProgress,
@@ -11,6 +12,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router";
 
 export const MonthlyPlanTable = () => {
   const { monthlyPlans, isLoading } = useFetchMonthlyPlans();
@@ -41,7 +43,12 @@ export const MonthlyPlanTable = () => {
                 <FormattedDay value={monthlyPlan.updatedAt} />
               </TableCell>
               <TableCell>
-                <Button variant="contained" color="inherit">
+                <Button
+                  component={RouterLink}
+                  to={paths.budgetManagement.monthlyPlanDetail(monthlyPlan.id)}
+                  variant="contained"
+                  color="inherit"
+                >
                   編集
                 </Button>
               </TableCell>
