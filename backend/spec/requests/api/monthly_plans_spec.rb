@@ -105,6 +105,7 @@ RSpec.describe "Api::MonthlyPlans", type: :request do
                                                  "created_at" => monthly_plan.created_at.iso8601(3),
                                                  "updated_at" => monthly_plan.updated_at.iso8601(3),
                                                  "household_budgets" => [],
+                                                 "monthly_plan_details" => [],
                                                  "total_income" => 0,
                                                })
           end
@@ -113,6 +114,7 @@ RSpec.describe "Api::MonthlyPlans", type: :request do
         context "詳細情報作成後の場合" do
           let!(:household_budget) { create(:household_budget, monthly_plan: monthly_plan, income: 100_000) }
           let!(:household_budget2) { create(:household_budget, :father, monthly_plan: monthly_plan, income: 200_000) }
+          let!(:monthly_plan_detail) { create(:monthly_plan_detail, monthly_plan: monthly_plan, amount: 200_000) }
 
           it "月次予算計画の詳細と200を返す" do
             subject
@@ -134,6 +136,16 @@ RSpec.describe "Api::MonthlyPlans", type: :request do
                                                      "relationship" => "father",
                                                      "income" => 200_000,
                                                    }
+                                                 ],
+                                                 "monthly_plan_details" => [
+                                                   "id" => monthly_plan_detail.id,
+                                                   "budget_item" => {
+                                                     "id" => monthly_plan_detail.budget_item.id,
+                                                     "name" => monthly_plan_detail.budget_item.name,
+                                                     "type" => monthly_plan_detail.budget_item.type,
+                                                     "operable" => true
+                                                   },
+                                                   "amount" => 200_000,
                                                  ],
                                                  "total_income" => 300_000,
                                                })
