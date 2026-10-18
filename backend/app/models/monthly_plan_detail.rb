@@ -1,5 +1,6 @@
 class MonthlyPlanDetail < ApplicationRecord
   belongs_to :monthly_plan
+  belongs_to :budget_item
 
   validates :budget_item_id, uniqueness: { scope: :monthly_plan_id }
   validates :amount, presence: true, numericality: { greater_than_or_equal_to: 0 }

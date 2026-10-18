@@ -9,7 +9,10 @@ Rails.application.routes.draw do
     resources :profiles, only: [ :create ]
     resources :budget_items
     resources :monthly_plans do
-      resource :household_budgets, only: [ :update ], module: :monthly_plans
+      scope module: :monthly_plans do
+        resource :household_budgets, only: [:update]
+        resource :monthly_plan_details, only: [:update]
+      end
     end
 
     post "signup", to: "auth#signup"

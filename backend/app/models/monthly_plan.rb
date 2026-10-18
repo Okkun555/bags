@@ -29,4 +29,21 @@ class MonthlyPlan < ApplicationRecord
       end
     end
   end
+
+  def update_monthly_plan_details!(monthly_plan_detail_attrs)
+    ActiveRecord::Base.transaction do
+      sent_budget_item_ids = monthly_plan_detail_attrs.map { |attr| attr[:budget_item_id].to_i }
+      monthly_plan_details.where.not(budget_item_id: sent_budget_item_ids).destroy_all
+
+      # N+1対策として既存レコードを一括取得する
+      # 更新するレコード件数が増えるようならupsert_allを検討する
+      existing_details = monthly_plan_details.where(budget_item_id: sent_budget_item_ids).index_by(&:budget_item_id)
+
+      monthly_plan_detail_attrs.each do |attrs|
+        detail = existing_details[attrs[:budget_item_id].to_i] || monthly_plan_details.build(budget_item_id: attrs[:budget_item_id])
+        detail.assign_attributes(attrs.except(:budget_item_id))
+        detail.save! if detail.changed?
+      end
+    end
+  end
 end

@@ -2,6 +2,7 @@ import { useFetchMonthPlanDetail } from "@/repositories/budget-management/monthl
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router";
 import { HouseholdBudgetSection } from "./HouseholdBudgetSection";
+import { MonthlyPlanDetailSection } from "./MonthlyPlanDetail";
 
 export const MonthlyPlanShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,6 +26,7 @@ export const MonthlyPlanShow = () => {
         {monthlyPlanDetail && (
           <>
             <HouseholdBudgetSection monthlyPlanDetail={monthlyPlanDetail} />
+            <MonthlyPlanDetailSection />
           </>
         )}
         {/* <HouseholdBudgetSection monthlyPlanId={monthlyPlanId} /> */}
