@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { backendPaths } from "../paths";
 import { fetcher, postRequest } from "@/libs/api/client";
 import type { GetListWithPagination } from "@/types/apiResponse";
-import type { MonthlyPlanDetail, MonthlyPlan } from "@/types/budgetManagement";
+import type { MonthlyPlanShow, MonthlyPlan } from "@/types/budgetManagement";
 import useSWRMutation from "swr/mutation";
 import type { AddMonthlyPlanForm } from "@/components/budget-management/MonthlyPlanList/AddMonthlyPlanDialog";
 
@@ -22,12 +22,12 @@ export const useFetchMonthlyPlans = () => {
  * 月次予算計画の詳細取得API
  */
 export const useFetchMonthPlanDetail = (id: number) => {
-  const { data, isLoading } = useSWR<MonthlyPlanDetail>(
+  const { data, isLoading } = useSWR<MonthlyPlanShow>(
     backendPaths.budgetManagement.monthlyPlan.show(id),
     fetcher,
   );
 
-  return { monthlyPlanDetail: data, isLoading };
+  return { monthlyPlanShow: data, isLoading };
 };
 
 /**

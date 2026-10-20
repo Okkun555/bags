@@ -1,6 +1,6 @@
 import {
   RELATIONSHIP_LABEL,
-  type MonthlyPlanDetail,
+  type MonthlyPlanShow,
 } from "@/types/budgetManagement";
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import { useState, type FC } from "react";
@@ -8,13 +8,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import { HouseholdBudgetEditDialog } from "../HouseholdBudgetEditDialog";
 
 type Props = {
-  monthlyPlanDetail: MonthlyPlanDetail;
+  monthlyPlanShow: MonthlyPlanShow;
 };
 
-export const HouseholdBudgetSection: FC<Props> = ({ monthlyPlanDetail }) => {
+export const HouseholdBudgetSection: FC<Props> = ({ monthlyPlanShow }) => {
   const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
 
-  const householdBudgets = monthlyPlanDetail.householdBudgets;
+  const householdBudgets = monthlyPlanShow.householdBudgets;
   const totalIncome = householdBudgets.reduce(
     (total, budget) => total + budget.income,
     0,
@@ -121,7 +121,7 @@ export const HouseholdBudgetSection: FC<Props> = ({ monthlyPlanDetail }) => {
       <HouseholdBudgetEditDialog
         isOpen={isOpenEditDialog}
         handleClose={() => setIsOpenEditDialog(false)}
-        monthlyPlanDetail={monthlyPlanDetail}
+        monthlyPlanShow={monthlyPlanShow}
       />
     </>
   );

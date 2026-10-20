@@ -6,7 +6,7 @@ import { MonthlyPlanDetailSection } from "./MonthlyPlanDetail";
 
 export const MonthlyPlanShow = () => {
   const { id } = useParams<{ id: string }>();
-  const { monthlyPlanDetail, isLoading } = useFetchMonthPlanDetail(Number(id));
+  const { monthlyPlanShow, isLoading } = useFetchMonthPlanDetail(Number(id));
 
   if (isLoading) {
     return (
@@ -19,14 +19,14 @@ export const MonthlyPlanShow = () => {
   return (
     <Box>
       <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-        {monthlyPlanDetail?.title}
+        {monthlyPlanShow?.title}
       </Typography>
 
       <Stack spacing={2} sx={{ mt: 2 }}>
-        {monthlyPlanDetail && (
+        {monthlyPlanShow && (
           <>
-            <HouseholdBudgetSection monthlyPlanDetail={monthlyPlanDetail} />
-            <MonthlyPlanDetailSection />
+            <HouseholdBudgetSection monthlyPlanShow={monthlyPlanShow} />
+            <MonthlyPlanDetailSection monthlyPlanShow={monthlyPlanShow} />
           </>
         )}
         {/* <HouseholdBudgetSection monthlyPlanId={monthlyPlanId} /> */}

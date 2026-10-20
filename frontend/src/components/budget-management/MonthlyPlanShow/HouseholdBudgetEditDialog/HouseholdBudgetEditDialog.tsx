@@ -1,7 +1,7 @@
 import {
   RELATIONSHIP_LABEL,
   RELATIONSHIP_OPTIONS,
-  type MonthlyPlanDetail,
+  type MonthlyPlanShow,
 } from "@/types/budgetManagement";
 import {
   Alert,
@@ -27,18 +27,18 @@ import { usePutHouseholdBudgets } from "@/repositories/budget-management/househo
 type Props = {
   isOpen: boolean;
   handleClose: () => void;
-  monthlyPlanDetail: MonthlyPlanDetail;
+  monthlyPlanShow: MonthlyPlanShow;
 };
 
 export const HouseholdBudgetEditDialog: FC<Props> = ({
   isOpen,
   handleClose,
-  monthlyPlanDetail,
+  monthlyPlanShow,
 }) => {
   const { control, register, fields, addRow, removeRow, handleSubmit, errors } =
-    useHouseholdBudgetEditDialog(monthlyPlanDetail.householdBudgets, isOpen);
+    useHouseholdBudgetEditDialog(monthlyPlanShow.householdBudgets, isOpen);
 
-  const { putHouseholdBudget } = usePutHouseholdBudgets(monthlyPlanDetail.id);
+  const { putHouseholdBudget } = usePutHouseholdBudgets(monthlyPlanShow.id);
 
   const onSubmit = async (value: HouseholdBudgetFormValues) => {
     await putHouseholdBudget(value);

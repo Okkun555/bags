@@ -32,8 +32,15 @@ export type MonthlyPlan = {
   updatedAt: string;
 };
 
-export type MonthlyPlanDetail = MonthlyPlan & {
+export type MonthlyPlanShow = MonthlyPlan & {
   householdBudgets: Array<HouseholdBudget>;
+  monthlyPlanDetails: Array<MonthlyPlanDetail>;
+};
+
+type MonthlyPlanDetail = {
+  id: number;
+  budgetItem: BudgetItem & { operable: boolean };
+  amount: number;
 };
 
 export type BudgetItems = Array<BudgetItem & { operable: boolean }>;

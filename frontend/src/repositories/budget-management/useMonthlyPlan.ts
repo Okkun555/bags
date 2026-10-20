@@ -4,7 +4,7 @@ import { backendPaths } from "../paths";
 import { fetcher, postRequest } from "@/libs/api/client";
 import useSWR from "swr";
 import type { GetMonthlyPlansResponse } from "@/types/apiResponse";
-import type { MonthlyPlanDetail } from "@/types/budgetManagement";
+import type { MonthlyPlanShow } from "@/types/budgetManagement";
 import type { AddMonthlyPlanForm } from "@/components/budget-management/MonthlyPlanList/AddMonthlyPlanDialog";
 
 export const useGetMonthlyPlans = () => {
@@ -20,7 +20,7 @@ export const useGetMonthlyPlans = () => {
 };
 
 export const useGetMonthlyPlan = (id: number) => {
-  const { data, isLoading } = useSWR<MonthlyPlanDetail>(
+  const { data, isLoading } = useSWR<MonthlyPlanShow>(
     backendPaths.budgetManagement.monthlyPlan.show(id),
     fetcher,
   );
