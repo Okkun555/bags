@@ -11,7 +11,7 @@ class MonthlyPlan < ApplicationRecord
     ActiveRecord::Base.transaction do
       save!
       # 予算別詳細の登録
-      budget_items = BudgetItem.where(user: user)
+      budget_items = BudgetItem.where(user: [user, nil])
       rows = budget_items.map do |budget_item|
         {
           monthly_plan_id: id,

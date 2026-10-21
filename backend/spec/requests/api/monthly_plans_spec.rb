@@ -185,7 +185,7 @@ RSpec.describe "Api::MonthlyPlans", type: :request do
     context "ログイン済みの場合" do
       before do
         login_as(user)
-        create(:budget_item, user:)
+        create(:budget_item, user: nil)
         create(:budget_item, user:)
       end
 
