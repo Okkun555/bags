@@ -185,11 +185,13 @@ RSpec.describe "Api::MonthlyPlans", type: :request do
     context "ログイン済みの場合" do
       before do
         login_as(user)
+        create(:budget_item, user:)
+        create(:budget_item, user:)
       end
 
       context "パラメーターが有効な場合" do
-        it "月次予算計画を作成し、201と作成し月次予算計画を返す" do
-          expect { subject }.to change(MonthlyPlan, :count).by(1)
+        it "月次予算計画、項目別予算の初期値を作成し、201と作成し月次予算計画を返す" do
+          expect { subject }.to change(MonthlyPlan, :count).by(1).and change(MonthlyPlanDetail, :count).by(2)
           expect(response).to have_http_status(:created)
 
           target = MonthlyPlan.last

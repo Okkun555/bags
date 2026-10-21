@@ -21,7 +21,7 @@ class Api::MonthlyPlansController < ApplicationController
     monthly_plan = current_user.monthly_plans.build(monthly_plan_params)
     authorize monthly_plan
 
-    if monthly_plan.save!
+    if monthly_plan.save_with_details!
       render json: MonthlyPlanSerializer.render_as_json(monthly_plan), status: :created
     end
   end

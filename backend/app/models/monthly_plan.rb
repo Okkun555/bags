@@ -7,6 +7,25 @@ class MonthlyPlan < ApplicationRecord
   validates :title, presence: true, uniqueness: { scope: :user_id }
   validates :description, length: { maximum: 500 }, allow_blank: true
 
+  def save_with_details!
+    ActiveRecord::Base.transaction do
+      save!
+      # 予算別詳細の登録
+      budget_items = BudgetItem.where(user: user)
+      rows = budget_items.map do |budget_item|
+        {
+          monthly_plan_id: id,
+          budget_item_id: budget_item.id,
+          amount: 0,
+          created_at: Time.current,
+          updated_at: Time.current,
+        }
+      end
+
+      MonthlyPlanDetail.insert_all(rows)
+    end
+  end
+
   # household_budgets_attrs
   # {
   #   "id" => nil | intger,
