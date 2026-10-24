@@ -40,9 +40,6 @@ export const BudgetItemSetting = () => {
   return (
     <>
       <Box>
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          予算項目設定
-        </Typography>
         <Stack
           direction="row"
           sx={{
@@ -55,8 +52,6 @@ export const BudgetItemSetting = () => {
         >
           <Typography variant="body1">
             家計予算を計画する際に利用する「項目マスター」を管理します。
-            <br />
-            デフォルト項目に加えて、あなたのライフスタイルに沿ったカスタム項目を追加することが可能です。
           </Typography>
           <Button
             startIcon={<AddIcon />}

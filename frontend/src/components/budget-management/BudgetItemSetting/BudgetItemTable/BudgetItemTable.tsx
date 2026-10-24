@@ -1,3 +1,4 @@
+import { VerticalTable } from "@/components/shared/VerticalTable";
 import type { BudgetItem, BudgetItems } from "@/types/budgetManagement";
 import {
   Button,
@@ -5,7 +6,6 @@ import {
   Menu,
   MenuItem,
   Paper,
-  Table,
   TableBody,
   TableCell,
   TableContainer,
@@ -13,7 +13,6 @@ import {
   TableRow,
   Tooltip,
 } from "@mui/material";
-import { ArrowDropDownIcon } from "@mui/x-date-pickers";
 import { useState, type FC, type MouseEvent } from "react";
 
 type Props = {
@@ -36,12 +35,20 @@ export const BudgetItemTable: FC<Props> = ({
 
   return (
     <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
+      <VerticalTable>
+        <TableHead
+          sx={{
+            backgroundColor: "#F5F5F5",
+            "& .MuiTableCell-root": {
+              fontWeight: 600,
+              color: "text.secondary",
+            },
+          }}
+        >
           <TableRow>
-            <TableCell width={"15%"}>種別</TableCell>
-            <TableCell width={"70%"}>項目名</TableCell>
-            <TableCell width={"15%"}>操作</TableCell>
+            <TableCell width={20}>種別</TableCell>
+            <TableCell>項目名</TableCell>
+            <TableCell width={15}>操作</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -59,7 +66,6 @@ export const BudgetItemTable: FC<Props> = ({
               <TableCell>
                 <Button
                   variant="contained"
-                  endIcon={<ArrowDropDownIcon />}
                   size="small"
                   onClick={(e) => handleClick(e, budgetItem.id)}
                   color="inherit"
@@ -100,7 +106,7 @@ export const BudgetItemTable: FC<Props> = ({
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </VerticalTable>
     </TableContainer>
   );
 };
