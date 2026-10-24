@@ -232,4 +232,58 @@ RSpec.describe "Api::MonthlyPlans", type: :request do
       it_behaves_like 'requires authentication'
     end
   end
+
+  describe "#destroy" do
+    subject { delete "/api/monthly_plans/#{monthly_plan.id}" }
+
+    let(:monthly_plan) { create(:monthly_plan, user:) }
+
+    before do
+      # 家計予算データ
+      create(:household_budget, monthly_plan: monthly_plan)
+      create(:household_budget, :spouse, monthly_plan: monthly_plan)
+      # 項目ごとの予算データ
+      create(:monthly_plan_detail, monthly_plan: monthly_plan)
+      create(:monthly_plan_detail, monthly_plan: monthly_plan)
+    end
+
+    context "ログイン済みの場合" do
+      context "削除対象が本人が作成した予算計画の場合" do
+        before do
+          login_as(user)
+        end
+
+        it "対象のMonthlyPlanと子データを全て削除し、200を返す" do
+          expect { subject }.to change(MonthlyPlan, :count).by(-1)
+                                                           .and change(MonthlyPlanDetail, :count).by(-2)
+                                                                                                 .and change(HouseholdBudget, :count).by(-2)
+          expect(response).to have_http_status(:ok)
+          expect(response.parsed_body).to eq({
+                                   "id" => monthly_plan.id,
+                                   "title" => monthly_plan.title,
+                                   "description" => monthly_plan.description,
+                                   "created_at" => monthly_plan.created_at&.iso8601(3),
+                                   "updated_at" => monthly_plan.updated_at&.iso8601(3)
+                                 })
+        end
+      end
+
+      context "削除対象が他人が作成した予算計画の場合" do
+        let(:other_user) { create(:user) }
+
+        before do
+          login_as(other_user)
+        end
+
+        it "MonthlyPlan,紐づくデータは削除できず、404を返す" do
+          expect { subject }.to change(MonthlyPlan, :count).by(0)
+          expect(response). to have_http_status(:not_found)
+        end
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
 end

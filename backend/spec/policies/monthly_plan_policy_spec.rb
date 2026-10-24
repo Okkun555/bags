@@ -22,7 +22,7 @@ RSpec.describe MonthlyPlanPolicy, type: :policy do
     end
   end
 
-  permissions :show? do
+  permissions :show?, :destroy? do
     context "自身の予算計画の場合" do
       it "許可されること" do
         monthly_plan = MonthlyPlan.new(user: user)

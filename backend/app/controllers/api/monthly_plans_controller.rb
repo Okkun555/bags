@@ -26,6 +26,14 @@ class Api::MonthlyPlansController < ApplicationController
     end
   end
 
+  def destroy
+    monthly_plan = current_user.monthly_plans.find(params[:id])
+    authorize monthly_plan
+    monthly_plan.destroy!
+
+    render json: MonthlyPlanSerializer.render_as_json(monthly_plan), status: :ok
+  end
+
   private
 
   def monthly_plan_params
