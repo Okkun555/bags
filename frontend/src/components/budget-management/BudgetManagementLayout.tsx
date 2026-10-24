@@ -32,8 +32,6 @@ const MENU_ITEMS = [
 ] as const;
 
 export const BudgetManagementLayout = () => {
-  const location = useLocation();
-
   const [tab, setTab] = useState("plan");
 
   return (
@@ -61,7 +59,7 @@ export const BudgetManagementLayout = () => {
           ))}
         </Tabs>
       </Box>
-      <Box sx={{ flexGrow: 1, ml: 3, mt: 1 }}>
+      <Box sx={{ mt: 2 }}>
         <Outlet />
       </Box>
     </WithHeaderLayout>

@@ -1,6 +1,6 @@
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { backendPaths } from "../paths";
-import { fetcher, postRequest } from "@/libs/api/client";
+import { deleteRequest, fetcher, postRequest } from "@/libs/api/client";
 import type { GetListWithPagination } from "@/types/apiResponse";
 import type { MonthlyPlanShow, MonthlyPlan } from "@/types/budgetManagement";
 import useSWRMutation from "swr/mutation";
@@ -42,4 +42,22 @@ export const usePostMonthlyPlan = () => {
   >(backendPaths.budgetManagement.monthlyPlan.create, postRequest);
 
   return { postMonthlyPlan: trigger, isMutating };
+};
+
+/**
+ * 月次予算計画の削除API
+ */
+export const useDeleteMonthlyPlan = (id: number) => {
+  const { trigger, isMutating } = useSWRMutation(
+    backendPaths.budgetManagement.monthlyPlan.delete(id),
+    deleteRequest,
+    {
+      onSuccess: () => mutate(backendPaths.budgetManagement.monthlyPlan.index),
+    },
+  );
+
+  return {
+    deleteMonthlyPlan: trigger,
+    isMutating,
+  };
 };

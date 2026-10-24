@@ -10,6 +10,7 @@ export const backendPaths = {
       index: "/monthly_plans",
       show: (id: number) => `/monthly_plans/${id}`,
       create: "/monthly_plans",
+      delete: (id: number) => `/monthly_plans/${id}`,
     },
     budgetItem: {
       index: "/budget_items",
