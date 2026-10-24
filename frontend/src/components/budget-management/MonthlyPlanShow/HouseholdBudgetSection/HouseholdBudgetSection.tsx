@@ -24,38 +24,31 @@ export const HouseholdBudgetSection: FC<Props> = ({ monthlyPlanShow }) => {
     `${amount.toLocaleString("ja-JP")}円`;
 
   return (
-    <>
+    <Stack spacing={1.5}>
+      <Stack
+        direction="row"
+        sx={{ justifyContent: "space-between", alignItems: "center" }}
+      >
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+          世帯収入
+        </Typography>
+
+        <Button
+          variant="outlined"
+          startIcon={<EditIcon />}
+          onClick={() => setIsOpenEditDialog(true)}
+        >
+          編集
+        </Button>
+      </Stack>
       <Paper
         variant="outlined"
         sx={{
           width: "100%",
-          maxWidth: 900,
+          p: 3,
           borderRadius: 3,
-          p: { xs: 2, sm: 3 },
         }}
       >
-        <Stack
-          direction="row"
-          sx={{
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 2,
-          }}
-        >
-          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-            世帯収入
-          </Typography>
-
-          <Button
-            size="small"
-            variant="outlined"
-            startIcon={<EditIcon fontSize="small" />}
-            onClick={() => setIsOpenEditDialog(true)}
-          >
-            編集
-          </Button>
-        </Stack>
-
         {householdBudgets.length === 0 ? (
           <Empty />
         ) : (
@@ -123,7 +116,7 @@ export const HouseholdBudgetSection: FC<Props> = ({ monthlyPlanShow }) => {
         handleClose={() => setIsOpenEditDialog(false)}
         monthlyPlanShow={monthlyPlanShow}
       />
-    </>
+    </Stack>
   );
 };
 
