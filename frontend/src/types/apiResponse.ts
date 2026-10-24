@@ -19,7 +19,7 @@ export type OccupationsResponse = {};
 export type ProfileCreateResponse = Profile;
 
 /**
- * 予算管理（BudgetManagement）
+ * 家計管理（BudgetManagement）
  */
 export type GetMonthlyPlansResponse = {
   data: Array<MonthlyPlan>;

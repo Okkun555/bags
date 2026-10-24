@@ -14,22 +14,17 @@ export const MonthlyPlanList = () => {
 
   return (
     <>
-      <Box>
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-          計画一覧
-        </Typography>
+      <Stack spacing={2}>
         <Stack
           direction="row"
           sx={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            mt: 1,
-            mb: 2,
           }}
         >
           <Typography variant="body1">
-            あなたが今まで作成した、1ヶ月の家計予算を管理できます。
+            今まで作成した月毎の家計予算を管理し、支出管理に活用できます。
           </Typography>
           <Button
             startIcon={<AddIcon />}
@@ -39,8 +34,10 @@ export const MonthlyPlanList = () => {
             新規作成
           </Button>
         </Stack>
-      </Box>
-      <MonthlyPlanTable />
+
+        <MonthlyPlanTable />
+      </Stack>
+
       <AddMonthlyPlanDialog
         isOpen={isOpenCreateDialog}
         handleClose={handleCloseDialog}

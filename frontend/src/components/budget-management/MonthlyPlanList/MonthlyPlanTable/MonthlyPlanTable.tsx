@@ -1,4 +1,5 @@
 import { FormattedDay } from "@/components/shared/FormattedDay";
+import { VerticalTable } from "@/components/shared/VerticalTable";
 import { useFetchMonthlyPlans } from "@/repositories/budget-management/monthlyPlansRepository";
 import { paths } from "@/routes/paths";
 import {
@@ -23,13 +24,21 @@ export const MonthlyPlanTable = () => {
 
   return (
     <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
+      <VerticalTable>
+        <TableHead
+          sx={{
+            backgroundColor: "#F5F5F5",
+            "& .MuiTableCell-root": {
+              fontWeight: 600,
+              color: "text.secondary",
+            },
+          }}
+        >
           <TableRow>
             <TableCell>タイトル</TableCell>
             <TableCell>作成日時</TableCell>
             <TableCell>編集日時</TableCell>
-            <TableCell>操作</TableCell>
+            <TableCell width={20}>操作</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -44,6 +53,7 @@ export const MonthlyPlanTable = () => {
               </TableCell>
               <TableCell>
                 <Button
+                  size={"small"}
                   component={RouterLink}
                   to={paths.budgetManagement.monthlyPlanShow(monthlyPlan.id)}
                   variant="contained"
@@ -55,7 +65,7 @@ export const MonthlyPlanTable = () => {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </VerticalTable>
     </TableContainer>
   );
 };
