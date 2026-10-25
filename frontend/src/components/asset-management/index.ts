@@ -1,0 +1,1 @@
+export { AssetManagementLayout } from "./AssetManagementLayout";

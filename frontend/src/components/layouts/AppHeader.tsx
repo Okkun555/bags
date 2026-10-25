@@ -15,6 +15,7 @@ import { Link, useLocation } from "react-router";
 const navItems = [
   { name: "ダッシュボード", link: paths.dashboard },
   { name: "家計管理", link: paths.budgetManagement.monthlyPlans },
+  { name: "資産管理", link: paths.assetManagement.dashboard },
 ];
 
 export const AppHeader = () => {

@@ -10,6 +10,8 @@ import { BudgetManagementLayout } from "@/components/budget-management";
 import { MonthlyPlanList } from "@/components/budget-management/MonthlyPlanList";
 import { MonthlyPlanShow } from "@/components/budget-management/MonthlyPlanShow";
 import { BudgetItemSetting } from "@/components/budget-management/BudgetItemSetting";
+import { AssetManagementLayout } from "@/components/asset-management";
+import { AssetManagementDashboard } from "@/components/asset-management/AssetManagementDashboard";
 
 export default function Routes() {
   return (
@@ -41,6 +43,12 @@ export default function Routes() {
           <Route
             path={paths.budgetManagement.budgetItem}
             element={<BudgetItemSetting />}
+          />
+        </Route>
+        <Route path={"/asset-management"} element={<AssetManagementLayout />}>
+          <Route
+            path={paths.assetManagement.dashboard}
+            element={<AssetManagementDashboard />}
           />
         </Route>
       </Route>
