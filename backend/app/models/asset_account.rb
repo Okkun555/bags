@@ -13,4 +13,6 @@ class AssetAccount < ApplicationRecord
   validates :name, presence: true, length: { maximum: 100 }
   validates :code, presence: true, length: { maximum: 100 }, uniqueness: { scope: :user_id }
   validates :memo, length: { maximum: 400 }
+
+  attr_readonly :code
 end

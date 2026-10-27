@@ -1,5 +1,27 @@
 class AssetAccountPolicy < ApplicationPolicy
+  def index?
+    user.present?
+  end
+
+  def show?
+    user.present? && user.id == record.user_id
+  end
+
   def create?
     user.present?
+  end
+
+  def update?
+    user.present? && user.id == record.user_id
+  end
+
+  def destroy?
+    user.present? && user.id == record.user_id
+  end
+
+  class Scope < Scope
+    def resolve
+      scope.where(user: user)
+    end
   end
 end
