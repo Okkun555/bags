@@ -6,6 +6,7 @@ class User < ApplicationRecord
   with_options dependent: :destroy do
     has_many :budget_items
     has_many :monthly_plans
+    has_many :asset_accounts
   end
 
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
