@@ -3,6 +3,45 @@ require 'rails_helper'
 RSpec.describe "Api::AssetAccounts", type: :request do
   let(:user) { create(:user) }
 
+  describe "#index" do
+    subject { get "/api/asset_accounts" }
+
+    let!(:asset_account) { create(:asset_account, user:) }
+    let!(:asset_account2) { create(:asset_account, user:) }
+    let!(:other_asset_account) { create(:asset_account, user: create(:user)) }
+
+    context "ログイン済みの場合" do
+      before do
+        login_as(user)
+      end
+
+      it "自身の作成した資産口座一覧と200を返す" do
+        subject
+        expect(response).to have_http_status(:ok)
+        expect(response.parsed_body).to match_array([
+                                                      {
+                                                        "id" => asset_account.id,
+                                                        "name" => asset_account.name,
+                                                        "code" => asset_account.code,
+                                                        "account_type" => asset_account.account_type,
+                                                        "memo" => asset_account.memo
+                                                      },
+                                                      {
+                                                        "id" => asset_account2.id,
+                                                        "name" => asset_account2.name,
+                                                        "code" => asset_account2.code,
+                                                        "account_type" => asset_account2.account_type,
+                                                        "memo" => asset_account2.memo
+                                                      }
+                                           ])
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
+
   describe "#show" do
     subject { get "/api/asset_accounts/#{asset_account.id}" }
 
@@ -106,6 +145,38 @@ RSpec.describe "Api::AssetAccounts", type: :request do
         it "資産口座データを更新し、200を返す" do
           expect { subject }.to change(AssetAccount, :count).by(0)
           expect(response).to have_http_status(:ok)
+        end
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
+
+  describe "#destroy" do
+    subject { delete "/api/asset_accounts/#{asset_account.id}" }
+
+    let!(:asset_account) { create(:asset_account, user: user) }
+
+    context "ログイン済みの場合" do
+      before do
+        login_as(user)
+      end
+
+      context "自身が作成した資産口座が対象の場合" do
+        it "資産口座データを削除し、204を返す" do
+          expect { subject }.to change(AssetAccount, :count).by(-1)
+          expect(response).to have_http_status(:no_content)
+        end
+      end
+
+      context "他人が作成した資産口座が対象の場合" do
+        let!(:asset_account) { create(:asset_account, user: create(:user)) }
+
+        it "資産口座データを削除せず、403を返す" do
+          expect { subject }.to change(AssetAccount, :count).by(0)
+          expect(response).to have_http_status(:forbidden)
         end
       end
     end

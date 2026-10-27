@@ -1,4 +1,10 @@
 class Api::AssetAccountsController < ApplicationController
+  def index
+    asset_accounts = policy_scope(AssetAccount)
+    authorize AssetAccount
+
+    render json: AssetAccountSerializer.render_as_json(asset_accounts), status: :ok
+  end
 
   def show
     asset_account = AssetAccount.find(params[:id])
@@ -23,6 +29,13 @@ class Api::AssetAccountsController < ApplicationController
     asset_account.update!(update_asset_account_params)
 
     render json: AssetAccountSerializer.render_as_json(asset_account), status: :ok
+  end
+
+  def destroy
+    asset_account = AssetAccount.find(params[:id])
+    authorize asset_account
+
+    asset_account.destroy!
   end
 
   private
