@@ -1,16 +1,7 @@
-import { Link, Outlet, useLocation } from "react-router";
+import { Link, Outlet } from "react-router";
 import { WithHeaderLayout } from "../layouts/WithHeaderLayout";
-import {
-  Box,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  Tab,
-  Tabs,
-} from "@mui/material";
-import { paths } from "../routes/paths";
+import { Box, Tab, Tabs } from "@mui/material";
+import { paths } from "@/routes/paths";
 
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import SettingsIcon from "@mui/icons-material/Settings";

@@ -21,4 +21,10 @@ export const backendPaths = {
       put: (id: number) => `monthly_plans/${id}/household_budgets`,
     },
   },
+  assetManagement: {
+    account: {
+      index: "/asset_accounts",
+      create: "/asset_accounts",
+    },
+  },
 };

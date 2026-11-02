@@ -1,3 +1,4 @@
+import { paths } from "@/routes/paths";
 import { Stack } from "@mui/material";
 
 export const AssetManagementDashboard = () => {

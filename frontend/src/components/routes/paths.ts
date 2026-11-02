@@ -15,5 +15,6 @@ export const paths = {
   },
   assetManagement: {
     dashboard: "/asset-management/dashboard",
+    account_master: "/asset-management/accounts",
   },
 } as const;
