@@ -5,6 +5,7 @@ import { Link, Outlet } from "react-router";
 import React, { useState } from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import PublishIcon from "@mui/icons-material/Publish";
 import { paths } from "@/routes/paths";
 
 const MENU_ITEMS = [
@@ -19,6 +20,12 @@ const MENU_ITEMS = [
     value: "master",
     to: paths.assetManagement.accountMaster,
     icon: <SettingsIcon />,
+  },
+  {
+    label: "インポート",
+    value: "import",
+    to: paths.assetManagement.dataImport,
+    icon: <PublishIcon />,
   },
 ];
 
