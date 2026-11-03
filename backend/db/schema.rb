@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_25_023232) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_03_073513) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -25,6 +25,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_023232) do
     t.index ["user_id", "code"], name: "index_asset_accounts_on_user_id_and_code", unique: true
     t.index ["user_id"], name: "index_asset_accounts_on_user_id"
     t.check_constraint "account_type::text = ANY (ARRAY['cash'::character varying, 'bank'::character varying, 'securities'::character varying, 'insurance'::character varying, 'pension'::character varying, 'other'::character varying]::text[])", name: "asset_accounts_account_type_check"
+  end
+
+  create_table "asset_balances", force: :cascade do |t|
+    t.integer "amount", default: 0, null: false, comment: "総額"
+    t.bigint "asset_account_id"
+    t.datetime "created_at", null: false
+    t.date "target_date", null: false, comment: "対象日"
+    t.datetime "updated_at", null: false
+    t.index ["asset_account_id", "target_date"], name: "index_asset_balances_on_asset_account_id_and_target_date", unique: true
+    t.index ["asset_account_id"], name: "index_asset_balances_on_asset_account_id"
   end
 
   create_table "budget_items", force: :cascade do |t|
@@ -113,6 +123,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_023232) do
   end
 
   add_foreign_key "asset_accounts", "users"
+  add_foreign_key "asset_balances", "asset_accounts"
   add_foreign_key "budget_items", "users"
   add_foreign_key "household_budgets", "monthly_plans"
   add_foreign_key "monthly_plan_details", "budget_items"

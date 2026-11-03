@@ -1,5 +1,6 @@
 class AssetAccount < ApplicationRecord
   belongs_to :user
+  has_many :asset_balances
 
   enum :account_type, {
     cash: "cash", # 現金
