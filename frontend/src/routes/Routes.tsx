@@ -13,6 +13,7 @@ import { BudgetItemSetting } from "@/components/budget-management/BudgetItemSett
 import { AssetManagementLayout } from "@/components/asset-management";
 import { AssetManagementDashboard } from "@/components/asset-management/AssetManagementDashboard";
 import { AccountMaster } from "@/components/asset-management/AccountMaster";
+import { AssetImport } from "@/components/asset-management/AssetImport";
 
 export default function Routes() {
   return (
@@ -55,6 +56,11 @@ export default function Routes() {
           <Route
             path={paths.assetManagement.accountMaster}
             element={<AccountMaster />}
+          />
+
+          <Route
+            path={paths.assetManagement.dataImport}
+            element={<AssetImport />}
           />
         </Route>
       </Route>
