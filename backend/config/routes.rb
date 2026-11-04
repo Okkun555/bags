@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
     # 資産管理
     resources :asset_accounts
+    resources :asset_balances
 
     post "signup", to: "auth#signup"
     post "login", to: "auth#login"
