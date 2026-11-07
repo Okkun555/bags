@@ -18,4 +18,9 @@ export const paths = {
     accountMaster: "/asset-management/accounts",
     dataImport: "/asset-management/import",
   },
+  lifePlans: {
+    index: "/life-plans",
+    show: (id: number) => `/life-plans/${id}`,
+    showPattern: "/life-plans/:id",
+  },
 } as const;

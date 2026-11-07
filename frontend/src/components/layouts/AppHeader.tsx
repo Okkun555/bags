@@ -9,13 +9,14 @@ import {
   Typography,
 } from "@mui/material";
 import SavingsIcon from "@mui/icons-material/Savings";
-import { paths } from "../routes/paths";
+import { paths } from "@/routes/paths";
 import { Link, useLocation } from "react-router";
 
 const navItems = [
   { name: "ダッシュボード", link: paths.dashboard },
   { name: "家計管理", link: paths.budgetManagement.monthlyPlans },
   { name: "資産管理", link: paths.assetManagement.dashboard },
+  { name: "ライフプラン", link: paths.lifePlans.index },
 ];
 
 export const AppHeader = () => {

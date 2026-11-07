@@ -14,6 +14,7 @@ import { AssetManagementLayout } from "@/components/asset-management";
 import { AssetManagementDashboard } from "@/components/asset-management/AssetManagementDashboard";
 import { AccountMaster } from "@/components/asset-management/AccountMaster";
 import { AssetImport } from "@/components/asset-management/AssetImport";
+import { LifePlanList } from "@/components/life-plan/LifePlanList";
 
 export default function Routes() {
   return (
@@ -63,6 +64,7 @@ export default function Routes() {
             element={<AssetImport />}
           />
         </Route>
+        <Route path={paths.lifePlans.index} element={<LifePlanList />} />
       </Route>
     </RouterRoutes>
   );

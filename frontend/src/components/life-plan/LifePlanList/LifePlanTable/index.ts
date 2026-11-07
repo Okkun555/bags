@@ -1,0 +1,1 @@
+export { LifePlanTable } from "./LifePlanTable";
