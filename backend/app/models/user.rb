@@ -7,6 +7,7 @@ class User < ApplicationRecord
     has_many :budget_items
     has_many :monthly_plans
     has_many :asset_accounts
+    has_many :life_plans
   end
 
   has_many :asset_balances, through: :asset_accounts
