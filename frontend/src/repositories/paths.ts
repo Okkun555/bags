@@ -29,6 +29,9 @@ export const backendPaths = {
   },
   lifePlan: {
     index: "/life_plans",
+    show: (id: number) => `/life_plans/${id}`,
     create: "/life_plans",
+    update: (id: number) => `/life_plans/${id}`,
+    delete: (id: number) => `/life_plans/${id}`,
   },
 };

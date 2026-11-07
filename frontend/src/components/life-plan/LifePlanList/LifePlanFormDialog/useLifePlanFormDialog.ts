@@ -4,7 +4,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import z from "zod";
-import { usePostLifePlan } from "@/repositories/life-plan/lifePlansRepository";
+import {
+  usePostLifePlan,
+  usePutLifePlan,
+} from "@/repositories/life-plan/lifePlansRepository";
+import type { LifePlan } from "@/types/lifePlan";
 import { paths } from "@/routes/paths";
 
 const YEAR_REGEX = /^\d{4}$/;
@@ -19,11 +23,9 @@ const schema = z
     startFrom: z
       .string()
       .regex(YEAR_REGEX, { message: "開始年は4桁の西暦で入力してください" }),
-    endTo: z
-      .string()
-      .refine((v) => v === "" || YEAR_REGEX.test(v), {
-        message: "終了年は4桁の西暦で入力してください",
-      }),
+    endTo: z.string().refine((v) => v === "" || YEAR_REGEX.test(v), {
+      message: "終了年は4桁の西暦で入力してください",
+    }),
   })
   .refine(
     ({ startFrom, endTo }) =>
@@ -34,7 +36,7 @@ const schema = z
     { message: "終了年は開始年以降の年を入力してください", path: ["endTo"] },
   );
 
-export type CreateLifePlanForm = z.infer<typeof schema>;
+export type LifePlanForm = z.infer<typeof schema>;
 
 /** APIのエラー詳細のキー(snake_case) → フォームのフィールド */
 const SERVER_ERROR_FIELDS = {
@@ -50,9 +52,19 @@ type ErrorResponse = {
   };
 };
 
-export const useCreateLifePlanDialog = (handleClose: () => void) => {
+/**
+ * @param lifePlan 指定した場合は編集、未指定の場合は新規作成
+ */
+export const useLifePlanFormDialog = (
+  handleClose: () => void,
+  lifePlan?: LifePlan,
+) => {
   const navigate = useNavigate();
-  const { createLifePlan, isMutating } = usePostLifePlan();
+  const { createLifePlan, isMutating: isCreating } = usePostLifePlan();
+  // MEMO: フックは条件分岐できないため、新規作成時はダミーのidで呼ぶ(triggerは呼ばない)
+  const { updateLifePlan, isMutating: isUpdating } = usePutLifePlan(
+    lifePlan?.id ?? 0,
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
@@ -61,12 +73,12 @@ export const useCreateLifePlanDialog = (handleClose: () => void) => {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<CreateLifePlanForm>({
+  } = useForm<LifePlanForm>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: "",
-      startFrom: String(new Date().getFullYear()),
-      endTo: "",
+      name: lifePlan?.name ?? "",
+      startFrom: String(lifePlan?.startFrom ?? new Date().getFullYear()),
+      endTo: lifePlan?.endTo != null ? String(lifePlan.endTo) : "",
     },
   });
 
@@ -76,18 +88,26 @@ export const useCreateLifePlanDialog = (handleClose: () => void) => {
     handleClose();
   };
 
-  const onSubmit = async (data: CreateLifePlanForm) => {
+  const onSubmit = async (data: LifePlanForm) => {
     setErrorMessage(null);
     try {
-      const lifePlan = await createLifePlan({
+      const params = {
         lifePlan: {
           name: data.name,
           startFrom: Number(data.startFrom),
           endTo: data.endTo === "" ? null : Number(data.endTo),
         },
-      });
+      };
+
+      if (lifePlan) {
+        await updateLifePlan(params);
+        close();
+        return;
+      }
+
+      const created = await createLifePlan(params);
       close();
-      navigate(paths.lifePlans.show(lifePlan.id));
+      navigate(paths.lifePlans.show(created.id));
     } catch (e) {
       // MEMO: 入力内容は保持したまま、サーバー側のエラーをフィールドごとに表示する
       const error = isAxiosError<ErrorResponse>(e)
@@ -105,7 +125,10 @@ export const useCreateLifePlanDialog = (handleClose: () => void) => {
         }
       }
       if (!hasFieldError) {
-        setErrorMessage(error?.message ?? "ライフプランの作成に失敗しました");
+        setErrorMessage(
+          error?.message ??
+            `ライフプランの${lifePlan ? "更新" : "作成"}に失敗しました`,
+        );
       }
     }
   };
@@ -114,7 +137,7 @@ export const useCreateLifePlanDialog = (handleClose: () => void) => {
     control,
     errors,
     errorMessage,
-    isMutating,
+    isMutating: isCreating || isUpdating,
     close,
     onSubmit: handleSubmit(onSubmit),
   };
