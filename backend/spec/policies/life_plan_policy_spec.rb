@@ -38,7 +38,7 @@ RSpec.describe LifePlanPolicy, type: :policy do
     end
   end
 
-  %i[update? destroy?].each do |action|
+  %i[show? update? destroy?].each do |action|
     permissions action do
       let(:user) { create(:user) }
 

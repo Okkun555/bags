@@ -6,6 +6,13 @@ class Api::LifePlansController < ApplicationController
     render json: LifePlanSerializer.render_as_json(life_plans), status: :ok
   end
 
+  def show
+    life_plan = policy_scope(LifePlan).find(params[:id])
+    authorize life_plan
+
+    render json: LifePlanSerializer.render_as_json(life_plan), status: :ok
+  end
+
   def create
     life_plan = current_user.life_plans.build(life_plan_params)
     authorize life_plan

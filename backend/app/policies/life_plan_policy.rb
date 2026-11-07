@@ -3,6 +3,10 @@ class LifePlanPolicy < ApplicationPolicy
     user.present?
   end
 
+  def show?
+    owner?
+  end
+
   def create?
     user.present?
   end

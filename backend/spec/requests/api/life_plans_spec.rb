@@ -52,6 +52,54 @@ RSpec.describe "Api::LifePlans", type: :request do
     end
   end
 
+  describe "#show" do
+    subject { get "/api/life_plans/#{life_plan_id}" }
+
+    let!(:life_plan) { create(:life_plan, user:, start_from: 2026, end_to: 2060) }
+    let(:life_plan_id) { life_plan.id }
+
+    context "ログイン済みの場合" do
+      before do
+        login_as(user)
+      end
+
+      it "ライフプランと200を返す" do
+        subject
+        expect(response).to have_http_status(:ok)
+        expect(response.parsed_body).to eq(
+          {
+            "id" => life_plan.id,
+            "name" => life_plan.name,
+            "start_from" => 2026,
+            "end_to" => 2060
+          }
+        )
+      end
+
+      context "他ユーザーのライフプランの場合" do
+        let(:life_plan_id) { create(:life_plan, user: create(:user)).id }
+
+        it "404を返す" do
+          subject
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "存在しないIDの場合" do
+        let(:life_plan_id) { 0 }
+
+        it "404を返す" do
+          subject
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
+
   describe "#create" do
     subject { post "/api/life_plans", params: }
 

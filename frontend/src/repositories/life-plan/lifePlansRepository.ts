@@ -21,6 +21,18 @@ export const useFetchLifePlans = () => {
   return { lifePlans: data, isLoading };
 };
 
+/**
+ * ライフプランの詳細取得
+ */
+export const useFetchLifePlan = (id: number) => {
+  const { data, isLoading, error } = useSWR<LifePlan>(
+    backendPaths.lifePlan.show(id),
+    fetcher,
+  );
+
+  return { lifePlan: data, isLoading, error };
+};
+
 /** ライフプラン作成・更新APIのリクエスト */
 export type CreateLifePlanParams = {
   lifePlan: {

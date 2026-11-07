@@ -3,7 +3,7 @@ import { AppHeader } from "./AppHeader";
 import { Box, Container, Typography } from "@mui/material";
 
 type WithHeaderLayoutProps = {
-  pageTitle: string;
+  pageTitle?: string;
   description?: string;
   children: React.ReactNode;
 };
@@ -16,11 +16,13 @@ export const WithHeaderLayout: FC<WithHeaderLayoutProps> = ({
   <>
     <AppHeader />
     <Container sx={{ mt: 12 }}>
-      <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-        {pageTitle}
-      </Typography>
+      {pageTitle && (
+        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+          {pageTitle}
+        </Typography>
+      )}
       {description && <Typography variant="h6">{description}</Typography>}
-      <Box sx={{ mt: 1 }}>{children}</Box>
+      <Box sx={{ mt: pageTitle ? 1 : 0 }}>{children}</Box>
     </Container>
   </>
 );
