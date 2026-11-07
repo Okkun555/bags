@@ -57,8 +57,11 @@ export const FamilyMemberSection: FC<Props> = ({ lifePlanId }) => {
                   <TableCell>名前</TableCell>
                   <TableCell>続柄</TableCell>
                   <TableCell>現在の年齢</TableCell>
-                  <TableCell align="center" width={160}>
-                    操作
+                  <TableCell align="center" width={100}>
+                    編集
+                  </TableCell>
+                  <TableCell align="center" width={100}>
+                    削除
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -73,28 +76,24 @@ export const FamilyMemberSection: FC<Props> = ({ lifePlanId }) => {
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Stack
-                        direction="row"
-                        spacing={1}
-                        sx={{ justifyContent: "center" }}
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="inherit"
+                        onClick={() => setEditTarget(member)}
                       >
-                        <Button
-                          size="small"
-                          variant="contained"
-                          color="inherit"
-                          onClick={() => setEditTarget(member)}
-                        >
-                          編集
-                        </Button>
-                        <Button
-                          size="small"
-                          variant="contained"
-                          color="error"
-                          onClick={() => setDeleteTarget(member)}
-                        >
-                          削除
-                        </Button>
-                      </Stack>
+                        編集
+                      </Button>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="error"
+                        onClick={() => setDeleteTarget(member)}
+                      >
+                        削除
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
