@@ -6,6 +6,7 @@ ja:
       budget_item: "予算項目"
       monthly_plan: "月次予算計画"
       life_plan: "ライフプラン"
+      family_member: "家族メンバー"
     attributes:
       profile:
         name: "アカウント名"
@@ -23,6 +24,12 @@ ja:
         name: "タイトル"
         start_from: "開始年"
         end_to: "終了年"
+      family_member:
+        name: "名前"
+        relationship: "続柄"
+        birthday: "生年月日"
   errors:
+    family_member:
+      has_dependents: "収入または投資が紐づいているため、削除できません。"
     profile:
       already_exist: "アカウントに紐づくプロフィールが既に存在します。"

@@ -22,7 +22,11 @@ Rails.application.routes.draw do
     resources :asset_balances
 
     # ライフプラン
-    resources :life_plans, only: [ :index, :show, :create, :update, :destroy ]
+    resources :life_plans, only: [ :index, :show, :create, :update, :destroy ] do
+      scope module: :life_plans do
+        resources :family_members, only: [ :index, :create, :update, :destroy ]
+      end
+    end
 
     post "signup", to: "auth#signup"
     post "login", to: "auth#login"
