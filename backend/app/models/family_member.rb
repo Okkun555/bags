@@ -13,7 +13,7 @@ class FamilyMember < ApplicationRecord
     father: "father", # 父
     child: "child", # 子
     other: "other", # その他
-  }
+  }, validate: true
 
   validates :name, presence: true, length: { maximum: 100 }
   validates :relationship, presence: true
