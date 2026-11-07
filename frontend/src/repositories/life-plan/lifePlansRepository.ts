@@ -1,7 +1,12 @@
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 import { backendPaths } from "../paths";
-import { fetcher, postRequest } from "@/libs/api/client";
+import {
+  deleteRequest,
+  fetcher,
+  postRequest,
+  putRequest,
+} from "@/libs/api/client";
 import type { LifePlan } from "@/types/lifePlan";
 
 /**
@@ -16,7 +21,7 @@ export const useFetchLifePlans = () => {
   return { lifePlans: data, isLoading };
 };
 
-/** ライフプラン作成APIのリクエスト */
+/** ライフプラン作成・更新APIのリクエスト */
 export type CreateLifePlanParams = {
   lifePlan: {
     name: string;
@@ -39,4 +44,35 @@ export const usePostLifePlan = () => {
   });
 
   return { createLifePlan: trigger, isMutating };
+};
+
+/**
+ * ライフプランの更新
+ */
+export const usePutLifePlan = (id: number) => {
+  const { trigger, isMutating } = useSWRMutation<
+    LifePlan,
+    Error,
+    string,
+    CreateLifePlanParams
+  >(backendPaths.lifePlan.update(id), putRequest, {
+    onSuccess: () => mutate(backendPaths.lifePlan.index),
+  });
+
+  return { updateLifePlan: trigger, isMutating };
+};
+
+/**
+ * ライフプランの削除
+ */
+export const useDeleteLifePlan = (id: number) => {
+  const { trigger, isMutating } = useSWRMutation<LifePlan, Error, string>(
+    backendPaths.lifePlan.delete(id),
+    deleteRequest,
+    {
+      onSuccess: () => mutate(backendPaths.lifePlan.index),
+    },
+  );
+
+  return { deleteLifePlan: trigger, isMutating };
 };

@@ -2,7 +2,7 @@ import { WithHeaderLayout } from "@/components/layouts/WithHeaderLayout";
 import AddIcon from "@mui/icons-material/Add";
 import { Button, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import { CreateLifePlanDialog } from "./CreateLifePlanDialog";
+import { LifePlanFormDialog } from "./LifePlanFormDialog";
 import { LifePlanTable } from "./LifePlanTable";
 
 export const LifePlanList = () => {
@@ -30,10 +30,9 @@ export const LifePlanList = () => {
         <LifePlanTable />
       </Stack>
 
-      <CreateLifePlanDialog
-        isOpen={isOpenCreateDialog}
-        handleClose={() => setIsOpenCreateDialog(false)}
-      />
+      {isOpenCreateDialog && (
+        <LifePlanFormDialog handleClose={() => setIsOpenCreateDialog(false)} />
+      )}
     </WithHeaderLayout>
   );
 };
