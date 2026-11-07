@@ -14,8 +14,9 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import type { FC } from "react";
 import { useFetchFamilyMembers } from "@/repositories/life-plan/familyMembersRepository";
-import { relationshipLabels } from "@/types/familyMember";
+import { relationshipLabels, type FamilyMember } from "@/types/familyMember";
 import { SectionFrame } from "../../SectionFrame";
+import { DeleteFamilyMemberDialog } from "./DeleteFamilyMemberDialog";
 import { FamilyMemberFormDialog } from "./FamilyMemberFormDialog";
 
 type Props = {
@@ -26,6 +27,8 @@ type Props = {
 export const FamilyMemberSection: FC<Props> = ({ lifePlanId }) => {
   const { familyMembers, isLoading } = useFetchFamilyMembers(lifePlanId);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<FamilyMember | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<FamilyMember | null>(null);
 
   const addButton = (
     <Button variant="contained" onClick={() => setIsDialogOpen(true)}>
@@ -54,6 +57,9 @@ export const FamilyMemberSection: FC<Props> = ({ lifePlanId }) => {
                   <TableCell>名前</TableCell>
                   <TableCell>続柄</TableCell>
                   <TableCell>現在の年齢</TableCell>
+                  <TableCell align="center" width={160}>
+                    操作
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -65,6 +71,30 @@ export const FamilyMemberSection: FC<Props> = ({ lifePlanId }) => {
                       <Typography variant="body2">
                         {dayjs().diff(dayjs(member.birthday), "year")}歳
                       </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        sx={{ justifyContent: "center" }}
+                      >
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="inherit"
+                          onClick={() => setEditTarget(member)}
+                        >
+                          編集
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="error"
+                          onClick={() => setDeleteTarget(member)}
+                        >
+                          削除
+                        </Button>
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -79,6 +109,22 @@ export const FamilyMemberSection: FC<Props> = ({ lifePlanId }) => {
         <FamilyMemberFormDialog
           lifePlanId={lifePlanId}
           handleClose={() => setIsDialogOpen(false)}
+        />
+      )}
+
+      {editTarget && (
+        <FamilyMemberFormDialog
+          lifePlanId={lifePlanId}
+          familyMember={editTarget}
+          handleClose={() => setEditTarget(null)}
+        />
+      )}
+
+      {deleteTarget && (
+        <DeleteFamilyMemberDialog
+          lifePlanId={lifePlanId}
+          familyMember={deleteTarget}
+          handleClose={() => setDeleteTarget(null)}
         />
       )}
     </>

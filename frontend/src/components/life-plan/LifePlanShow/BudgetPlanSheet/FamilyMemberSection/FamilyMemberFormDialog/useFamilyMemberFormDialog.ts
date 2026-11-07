@@ -4,8 +4,11 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { usePostFamilyMember } from "@/repositories/life-plan/familyMembersRepository";
-import { relationships } from "@/types/familyMember";
+import {
+  usePostFamilyMember,
+  usePutFamilyMember,
+} from "@/repositories/life-plan/familyMembersRepository";
+import { relationships, type FamilyMember } from "@/types/familyMember";
 
 const schema = z.object({
   name: z
@@ -40,11 +43,21 @@ type ErrorResponse = {
   };
 };
 
+/**
+ * @param familyMember 指定した場合は編集、未指定の場合は新規登録
+ */
 export const useFamilyMemberFormDialog = (
   lifePlanId: number,
   handleClose: () => void,
+  familyMember?: FamilyMember,
 ) => {
-  const { createFamilyMember, isMutating } = usePostFamilyMember(lifePlanId);
+  const { createFamilyMember, isMutating: isCreating } =
+    usePostFamilyMember(lifePlanId);
+  // MEMO: フックは条件分岐できないため、新規登録時はダミーのidで呼ぶ(triggerは呼ばない)
+  const { updateFamilyMember, isMutating: isUpdating } = usePutFamilyMember(
+    lifePlanId,
+    familyMember?.id ?? 0,
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
@@ -56,10 +69,10 @@ export const useFamilyMemberFormDialog = (
   } = useForm<FamilyMemberForm>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: "",
-      // MEMO: 最初の1人は本人であることが多いので、本人を初期値にする
-      relationship: "me",
-      birthday: "",
+      name: familyMember?.name ?? "",
+      // MEMO: 最初の1人は本人であることが多いので、新規登録時は本人を初期値にする
+      relationship: familyMember?.relationship ?? "me",
+      birthday: familyMember?.birthday ?? "",
     },
   });
 
@@ -72,7 +85,11 @@ export const useFamilyMemberFormDialog = (
   const onSubmit = async (data: FamilyMemberForm) => {
     setErrorMessage(null);
     try {
-      await createFamilyMember({ familyMember: data });
+      if (familyMember) {
+        await updateFamilyMember({ familyMember: data });
+      } else {
+        await createFamilyMember({ familyMember: data });
+      }
       close();
     } catch (e) {
       // MEMO: 入力内容は保持したまま、サーバー側のエラーをフィールドごとに表示する
@@ -91,7 +108,10 @@ export const useFamilyMemberFormDialog = (
         }
       }
       if (!hasFieldError) {
-        setErrorMessage(error?.message ?? "家族メンバーの登録に失敗しました");
+        setErrorMessage(
+          error?.message ??
+            `家族メンバーの${familyMember ? "更新" : "登録"}に失敗しました`,
+        );
       }
     }
   };
@@ -100,7 +120,7 @@ export const useFamilyMemberFormDialog = (
     control,
     errors,
     errorMessage,
-    isMutating,
+    isMutating: isCreating || isUpdating,
     close,
     onSubmit: handleSubmit(onSubmit),
   };

@@ -1,7 +1,12 @@
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 import { backendPaths } from "../paths";
-import { fetcher, postRequest } from "@/libs/api/client";
+import {
+  deleteRequest,
+  fetcher,
+  postRequest,
+  putRequest,
+} from "@/libs/api/client";
 import type { FamilyMember, Relationship } from "@/types/familyMember";
 
 /**
@@ -40,4 +45,37 @@ export const usePostFamilyMember = (lifePlanId: number) => {
   });
 
   return { createFamilyMember: trigger, isMutating };
+};
+
+/**
+ * 家族メンバーの更新
+ */
+export const usePutFamilyMember = (lifePlanId: number, id: number) => {
+  const { trigger, isMutating } = useSWRMutation<
+    FamilyMember,
+    Error,
+    string,
+    CreateFamilyMemberParams
+  >(backendPaths.lifePlan.familyMember.update(lifePlanId, id), putRequest, {
+    onSuccess: () =>
+      mutate(backendPaths.lifePlan.familyMember.index(lifePlanId)),
+  });
+
+  return { updateFamilyMember: trigger, isMutating };
+};
+
+/**
+ * 家族メンバーの削除
+ */
+export const useDeleteFamilyMember = (lifePlanId: number, id: number) => {
+  const { trigger, isMutating } = useSWRMutation<FamilyMember, Error, string>(
+    backendPaths.lifePlan.familyMember.delete(lifePlanId, id),
+    deleteRequest,
+    {
+      onSuccess: () =>
+        mutate(backendPaths.lifePlan.familyMember.index(lifePlanId)),
+    },
+  );
+
+  return { deleteFamilyMember: trigger, isMutating };
 };
