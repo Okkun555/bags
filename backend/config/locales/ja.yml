@@ -5,6 +5,7 @@ ja:
       profile: "プロフィール"
       budget_item: "予算項目"
       monthly_plan: "月次予算計画"
+      life_plan: "ライフプラン"
     attributes:
       profile:
         name: "アカウント名"
@@ -18,6 +19,10 @@ ja:
       monthly_plan:
         title: "計画名"
         description: "説明"
+      life_plan:
+        name: "タイトル"
+        start_from: "開始年"
+        end_to: "終了年"
   errors:
     profile:
       already_exist: "アカウントに紐づくプロフィールが既に存在します。"

@@ -34,7 +34,7 @@ export const LifePlanTable = () => {
           }}
         >
           <TableRow>
-            <TableCell>名前</TableCell>
+            <TableCell>タイトル</TableCell>
             <TableCell>開始年</TableCell>
             <TableCell>終了年</TableCell>
             <TableCell align="center" width={100}>
