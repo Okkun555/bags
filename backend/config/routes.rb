@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     # ライフプラン
     resources :life_plans, only: [ :index, :show, :create, :update, :destroy ] do
       scope module: :life_plans do
-        resources :family_members, only: [ :index, :create ]
+        resources :family_members, only: [ :index, :create, :update, :destroy ]
       end
     end
 

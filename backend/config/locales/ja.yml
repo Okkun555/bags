@@ -29,5 +29,7 @@ ja:
         relationship: "続柄"
         birthday: "生年月日"
   errors:
+    family_member:
+      has_dependents: "収入または投資が紐づいているため、削除できません。"
     profile:
       already_exist: "アカウントに紐づくプロフィールが既に存在します。"
