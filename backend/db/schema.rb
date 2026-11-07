@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_03_073513) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_07_090300) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,6 +48,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_073513) do
     t.check_constraint "type::text = ANY (ARRAY['fixed'::character varying, 'variable'::character varying]::text[])", name: "budget_items_type_check"
   end
 
+  create_table "family_members", force: :cascade do |t|
+    t.date "birthday", null: false, comment: "生年月日"
+    t.datetime "created_at", null: false
+    t.bigint "life_plan_id", null: false
+    t.string "name", null: false, comment: "名前"
+    t.string "relationship", null: false, comment: "続柄(me:本人, spouse:配偶者, mother:母, father:父, child:子, other:その他)"
+    t.datetime "updated_at", null: false
+    t.index ["life_plan_id"], name: "index_family_members_on_life_plan_id"
+    t.check_constraint "relationship::text = ANY (ARRAY['me'::character varying, 'spouse'::character varying, 'mother'::character varying, 'father'::character varying, 'child'::character varying, 'other'::character varying]::text[])", name: "family_members_relationship_check"
+  end
+
   create_table "household_budgets", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "income", null: false, comment: "収入"
@@ -56,6 +67,51 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_073513) do
     t.datetime "updated_at", null: false
     t.index ["monthly_plan_id"], name: "index_household_budgets_on_monthly_plan_id"
     t.check_constraint "relationship::text = ANY (ARRAY['me'::character varying, 'spouse'::character varying, 'father'::character varying, 'mother'::character varying, 'child'::character varying, 'other'::character varying]::text[])", name: "household_budgets_relationship_check"
+  end
+
+  create_table "incomes", force: :cascade do |t|
+    t.integer "amount", null: false, comment: "収入額"
+    t.datetime "created_at", null: false
+    t.integer "end_to", comment: "終了年(NULLは期限なし)"
+    t.bigint "family_member_id", null: false
+    t.string "income_type", null: false, comment: "収入種別(salary:給与, dividend:配当金, side_job:副業, bonus:賞与, windfall:臨時収入)"
+    t.bigint "life_plan_id", null: false
+    t.string "memo", comment: "備考"
+    t.integer "start_from", null: false, comment: "開始年"
+    t.datetime "updated_at", null: false
+    t.index ["family_member_id"], name: "index_incomes_on_family_member_id"
+    t.index ["life_plan_id"], name: "index_incomes_on_life_plan_id"
+    t.check_constraint "amount > 0", name: "incomes_amount_check"
+    t.check_constraint "end_to IS NULL OR start_from <= end_to", name: "incomes_period_check"
+    t.check_constraint "income_type::text = ANY (ARRAY['salary'::character varying, 'dividend'::character varying, 'side_job'::character varying, 'bonus'::character varying, 'windfall'::character varying]::text[])", name: "incomes_income_type_check"
+  end
+
+  create_table "investments", force: :cascade do |t|
+    t.integer "amount", null: false, comment: "金額"
+    t.datetime "created_at", null: false
+    t.integer "end_to", comment: "終了年(NULLは期限なし)"
+    t.bigint "family_member_id", null: false
+    t.string "investment_type", null: false, comment: "投資種別(stock:株式, insurance:保険)"
+    t.bigint "life_plan_id", null: false
+    t.string "memo", comment: "備考"
+    t.integer "start_from", null: false, comment: "開始年"
+    t.datetime "updated_at", null: false
+    t.index ["family_member_id"], name: "index_investments_on_family_member_id"
+    t.index ["life_plan_id"], name: "index_investments_on_life_plan_id"
+    t.check_constraint "amount > 0", name: "investments_amount_check"
+    t.check_constraint "end_to IS NULL OR start_from <= end_to", name: "investments_period_check"
+    t.check_constraint "investment_type::text = ANY (ARRAY['stock'::character varying, 'insurance'::character varying]::text[])", name: "investments_investment_type_check"
+  end
+
+  create_table "life_plans", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "end_to", comment: "終了年"
+    t.string "name", null: false, comment: "ライフプラン名"
+    t.integer "start_from", null: false, comment: "開始年"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id", "name"], name: "index_life_plans_on_user_id_and_name", unique: true
+    t.index ["user_id"], name: "index_life_plans_on_user_id"
   end
 
   create_table "monthly_plan_details", force: :cascade do |t|
@@ -125,7 +181,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_03_073513) do
   add_foreign_key "asset_accounts", "users"
   add_foreign_key "asset_balances", "asset_accounts"
   add_foreign_key "budget_items", "users"
+  add_foreign_key "family_members", "life_plans"
   add_foreign_key "household_budgets", "monthly_plans"
+  add_foreign_key "incomes", "family_members"
+  add_foreign_key "incomes", "life_plans"
+  add_foreign_key "investments", "family_members"
+  add_foreign_key "investments", "life_plans"
+  add_foreign_key "life_plans", "users"
   add_foreign_key "monthly_plan_details", "budget_items"
   add_foreign_key "monthly_plan_details", "monthly_plans"
   add_foreign_key "monthly_plans", "users"
