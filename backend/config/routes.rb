@@ -21,6 +21,9 @@ Rails.application.routes.draw do
     resources :asset_accounts
     resources :asset_balances
 
+    # ライフプラン
+    resources :life_plans, only: [ :index ]
+
     post "signup", to: "auth#signup"
     post "login", to: "auth#login"
     post "logout", to: "auth#logout"

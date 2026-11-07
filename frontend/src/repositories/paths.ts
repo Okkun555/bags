@@ -27,4 +27,7 @@ export const backendPaths = {
       create: "/asset_accounts",
     },
   },
+  lifePlan: {
+    index: "/life_plans",
+  },
 };
