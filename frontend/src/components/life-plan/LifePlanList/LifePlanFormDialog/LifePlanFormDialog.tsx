@@ -11,20 +11,25 @@ import {
 } from "@mui/material";
 import type { FC } from "react";
 import { Controller } from "react-hook-form";
-import { useCreateLifePlanDialog } from "./useCreateLifePlanDialog";
+import type { LifePlan } from "@/types/lifePlan";
+import { useLifePlanFormDialog } from "./useLifePlanFormDialog";
 
 type Props = {
-  isOpen: boolean;
+  /** 指定した場合は編集ダイアログ、未指定の場合は新規作成ダイアログになる */
+  lifePlan?: LifePlan;
   handleClose: () => void;
 };
 
-export const CreateLifePlanDialog: FC<Props> = ({ isOpen, handleClose }) => {
+// MEMO: フォームの初期値はマウント時に決まるため、開くたびにマウントし直す前提で使う
+export const LifePlanFormDialog: FC<Props> = ({ lifePlan, handleClose }) => {
   const { control, errors, errorMessage, isMutating, close, onSubmit } =
-    useCreateLifePlanDialog(handleClose);
+    useLifePlanFormDialog(handleClose, lifePlan);
 
   return (
-    <Dialog open={isOpen} onClose={close} fullWidth maxWidth="sm">
-      <DialogTitle>ライフプランの新規作成</DialogTitle>
+    <Dialog open onClose={close} fullWidth maxWidth="sm">
+      <DialogTitle>
+        {lifePlan ? "ライフプランの編集" : "ライフプランの新規作成"}
+      </DialogTitle>
       <Box component="form" onSubmit={onSubmit} noValidate>
         <DialogContent>
           <Stack spacing={3} sx={{ pt: 1 }}>
@@ -77,7 +82,7 @@ export const CreateLifePlanDialog: FC<Props> = ({ isOpen, handleClose }) => {
             キャンセル
           </Button>
           <Button type="submit" variant="contained" disabled={isMutating}>
-            作成する
+            {lifePlan ? "更新する" : "作成する"}
           </Button>
         </DialogActions>
       </Box>
