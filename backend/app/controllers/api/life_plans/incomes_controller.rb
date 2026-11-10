@@ -10,15 +10,17 @@ class Api::LifePlans::IncomesController < ApplicationController
   # 複数の収入を一度に登録する。1件でも不正な場合は何も登録しない
   def create
     life_plan = policy_scope(LifePlan).find(params[:life_plan_id])
-    incomes = incomes_params.map { |attrs| life_plan.incomes.build(income_attributes(attrs)) }
+    # MEMO: 登録先は同じライフプランなので、認可は行ごとではなくライフプランに対して1回だけ行う
+    authorize life_plan, :update?
     return render_bad_request("収入の区分が不正です。") if invalid_amount_type?(incomes_params)
 
-    incomes.each { |income| authorize income }
+    incomes = incomes_params.map { |attrs| life_plan.incomes.build(income_attributes(attrs)) }
 
     errors = invalid_income_errors(incomes)
     return render_error(code: "unprocessable", message: "入力内容に不備があります。", status: :unprocessable_entity, details: errors) if errors.present?
 
-    Income.transaction { incomes.each(&:save!) }
+    # MEMO: 直前にすべて検証済みなので、保存時は再検証しない
+    Income.transaction { incomes.each { |income| income.save!(validate: false) } }
     render json: IncomeSerializer.render_as_json(incomes), status: :created
   end
 
@@ -68,7 +70,7 @@ class Api::LifePlans::IncomesController < ApplicationController
     attributes
   end
 
-  # 「incomes.<行番号>.<属性>」をキーにしたエラー詳細を返す
+  # 各行を検証し、「incomes.<行番号>.<属性>」をキーにしたエラー詳細を返す
   def invalid_income_errors(incomes)
     incomes.each_with_index.each_with_object({}) do |(income, index), details|
       next if income.valid?
