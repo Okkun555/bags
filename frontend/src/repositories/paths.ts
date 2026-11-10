@@ -41,5 +41,13 @@ export const backendPaths = {
       delete: (lifePlanId: number, id: number) =>
         `/life_plans/${lifePlanId}/family_members/${id}`,
     },
+    income: {
+      index: (lifePlanId: number) => `/life_plans/${lifePlanId}/incomes`,
+      create: (lifePlanId: number) => `/life_plans/${lifePlanId}/incomes`,
+      update: (lifePlanId: number, id: number) =>
+        `/life_plans/${lifePlanId}/incomes/${id}`,
+      delete: (lifePlanId: number, id: number) =>
+        `/life_plans/${lifePlanId}/incomes/${id}`,
+    },
   },
 };

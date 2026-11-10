@@ -26,8 +26,12 @@ RSpec.describe Income, type: :model do
       expect(build(:income, start_from: 2031, end_to: 2030)).not_to be_valid
     end
 
-    it "不正な種別はenumで例外になる" do
-      expect { build(:income, income_type: "invalid") }.to raise_error(ArgumentError)
+    it "不正な種別は無効" do
+      expect(build(:income, income_type: "invalid")).not_to be_valid
+    end
+
+    it "amountがinteger上限を超える場合は無効" do
+      expect(build(:income, amount: 2_147_483_648)).not_to be_valid
     end
 
     it "別のライフプランの family_member は無効" do
@@ -35,6 +39,20 @@ RSpec.describe Income, type: :model do
       record = build(:income, family_member: other_member)
       expect(record).not_to be_valid
       expect(record.errors[:family_member]).to be_present
+    end
+  end
+
+  describe ".to_annual_amount" do
+    it "月額の場合は12倍した年額を返す" do
+      expect(described_class.to_annual_amount("250000", "monthly")).to eq(3_000_000)
+    end
+
+    it "年額の場合はそのまま返す" do
+      expect(described_class.to_annual_amount("3000000", "annual")).to eq("3000000")
+    end
+
+    it "月額で数値として解釈できない場合はそのまま返す" do
+      expect(described_class.to_annual_amount("abc", "monthly")).to eq("abc")
     end
   end
 
