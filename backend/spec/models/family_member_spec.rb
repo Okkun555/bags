@@ -14,8 +14,8 @@ RSpec.describe FamilyMember, type: :model do
       expect(build(:family_member, birthday: nil)).not_to be_valid
     end
 
-    it "不正なrelationshipはenumで例外になる" do
-      expect { build(:family_member, relationship: "friend") }.to raise_error(ArgumentError)
+    it "不正なrelationshipは無効" do
+      expect(build(:family_member, relationship: "friend")).not_to be_valid
     end
 
     it "不正なrelationshipはDBレベルで弾かれる" do
