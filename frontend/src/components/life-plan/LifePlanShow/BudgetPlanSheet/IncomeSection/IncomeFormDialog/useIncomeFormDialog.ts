@@ -9,11 +9,8 @@ import {
   type IncomeParams,
 } from "@/repositories/life-plan/incomesRepository";
 import type { FamilyMember } from "@/types/familyMember";
-import {
-  amountTypes,
-  incomeTypes,
-  type Income,
-} from "@/types/income";
+import { amountTypes } from "@/types/amountType";
+import { incomeTypes, type Income } from "@/types/income";
 
 const YEAR_REGEX = /^\d{4}$/;
 const AMOUNT_REGEX = /^[1-9]\d*$/;

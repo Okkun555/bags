@@ -1,0 +1,1 @@
+export { DeleteInvestmentDialog } from "./DeleteInvestmentDialog";

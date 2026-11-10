@@ -7,7 +7,8 @@ import {
   postRequest,
   putRequest,
 } from "@/libs/api/client";
-import type { AmountType, Income, IncomeType } from "@/types/income";
+import type { AmountType } from "@/types/amountType";
+import type { Income, IncomeType } from "@/types/income";
 
 /**
  * 収入の一覧取得

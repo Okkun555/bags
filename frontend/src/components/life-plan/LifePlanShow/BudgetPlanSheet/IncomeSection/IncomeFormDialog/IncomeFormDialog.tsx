@@ -18,9 +18,8 @@ import {
   relationshipLabels,
   type FamilyMember,
 } from "@/types/familyMember";
+import { amountTypeLabels, amountTypes } from "@/types/amountType";
 import {
-  amountTypeLabels,
-  amountTypes,
   incomeTypeLabels,
   incomeTypes,
   type Income,

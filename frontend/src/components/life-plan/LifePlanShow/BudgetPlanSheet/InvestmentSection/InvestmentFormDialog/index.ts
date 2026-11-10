@@ -1,0 +1,1 @@
+export { InvestmentFormDialog } from "./InvestmentFormDialog";
