@@ -26,8 +26,8 @@ RSpec.describe Investment, type: :model do
       expect(build(:investment, start_from: 2031, end_to: 2030)).not_to be_valid
     end
 
-    it "不正な種別はenumで例外になる" do
-      expect { build(:investment, investment_type: "invalid") }.to raise_error(ArgumentError)
+    it "不正な種別は無効" do
+      expect(build(:investment, investment_type: "invalid")).not_to be_valid
     end
 
     it "別のライフプランの family_member は無効" do
