@@ -87,7 +87,7 @@ export const LifePlanShow = () => {
           ))}
         </Tabs>
 
-        {sheet === "budgetPlan" && <BudgetPlanSheet lifePlanId={lifePlan.id} />}
+        {sheet === "budgetPlan" && <BudgetPlanSheet lifePlan={lifePlan} />}
         {sheet === "annualBudget" && (
           <Typography color="text.secondary">準備中</Typography>
         )}

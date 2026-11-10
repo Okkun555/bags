@@ -1,0 +1,1 @@
+export { IncomeFormDialog } from "./IncomeFormDialog";
