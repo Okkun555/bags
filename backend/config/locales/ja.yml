@@ -7,6 +7,7 @@ ja:
       monthly_plan: "月次予算計画"
       life_plan: "ライフプラン"
       family_member: "家族メンバー"
+      income: "収入"
     attributes:
       profile:
         name: "アカウント名"
@@ -28,6 +29,13 @@ ja:
         name: "名前"
         relationship: "続柄"
         birthday: "生年月日"
+      income:
+        family_member: "メンバー"
+        income_type: "収入種別"
+        amount: "収入額"
+        start_from: "開始年"
+        end_to: "終了年"
+        memo: "備考"
   errors:
     family_member:
       has_dependents: "収入または投資が紐づいているため、削除できません。"

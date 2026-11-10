@@ -6,7 +6,7 @@ module BelongsToLifePlanMember
     belongs_to :life_plan
     belongs_to :family_member
 
-    validates :amount, presence: true, numericality: { only_integer: true, greater_than: 0 }
+    validates :amount, presence: true, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 2_147_483_647 }
     validates :start_from, presence: true, numericality: { only_integer: true }
     validates :end_to, numericality: { only_integer: true, greater_than_or_equal_to: :start_from }, allow_nil: true
     validates :memo, length: { maximum: 400 }
