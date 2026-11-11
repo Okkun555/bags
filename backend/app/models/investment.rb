@@ -4,7 +4,7 @@ class Investment < ApplicationRecord
   enum :investment_type, {
     stock: "stock", # 株式
     insurance: "insurance", # 保険
-  }
+  }, validate: true
 
   validates :investment_type, presence: true
 end

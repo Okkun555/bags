@@ -25,8 +25,8 @@ Rails.application.routes.draw do
     resources :life_plans, only: [ :index, :show, :create, :update, :destroy ] do
       scope module: :life_plans do
         resources :family_members, only: [ :index, :create, :update, :destroy ]
-        resources :incomes, only: [ :index, :destroy ]
-        resources :investments, only: [ :index, :destroy ]
+        resources :incomes, only: [ :index, :create, :update, :destroy ]
+        resources :investments, only: [ :index, :create, :update, :destroy ]
       end
     end
 

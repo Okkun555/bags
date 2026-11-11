@@ -89,4 +89,123 @@ RSpec.describe "Api::LifePlans::Incomes", type: :request do
       it_behaves_like 'requires authentication'
     end
   end
+
+  describe "#create" do
+    subject { post "/api/life_plans/#{life_plan_id}/incomes", params: }
+
+    let(:family_member_id) { member.id }
+    let(:params) { { income: { family_member_id:, income_type: "salary", amount: 3_600_000, start_from: 2026, end_to: nil, memo: "メモ" } } }
+
+    context "ログイン済みの場合" do
+      before { login_as(user) }
+
+      it "作成して201を返す" do
+        expect { subject }.to change { Income.count }.by(1)
+        expect(response).to have_http_status(:created)
+
+        record = Income.last
+        expect(response.parsed_body).to eq({
+                                             "id" => record.id, "family_member_id" => member.id, "income_type" => "salary",
+                                             "amount" => 3_600_000, "start_from" => 2026, "end_to" => nil, "memo" => "メモ"
+                                           })
+      end
+
+      context "金額が0の場合" do
+        let(:params) { { income: { family_member_id:, income_type: "salary", amount: 0, start_from: 2026 } } }
+
+        it "422とエラー詳細を返し、作成されない" do
+          expect { subject }.not_to change { Income.count }
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response.parsed_body["error"]["detail"]).to have_key("amount")
+        end
+      end
+
+      context "種別が不正な場合" do
+        let(:params) { { income: { family_member_id:, income_type: "invalid", amount: 1000, start_from: 2026 } } }
+
+        it "422を返し、作成されない" do
+          expect { subject }.not_to change { Income.count }
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+
+      context "同じユーザーの別ライフプランのメンバーIDの場合" do
+        let(:family_member_id) { create(:family_member, life_plan: create(:life_plan, user:)).id }
+
+        it "404を返し、作成されない" do
+          expect { subject }.not_to change { Income.count }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "他ユーザーのメンバーIDの場合" do
+        let(:family_member_id) { create(:family_member, life_plan: create(:life_plan, user: create(:user))).id }
+
+        it "404を返し、作成されない" do
+          expect { subject }.not_to change { Income.count }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context "他ユーザーのライフプランの場合" do
+        let(:life_plan_id) { create(:life_plan, user: create(:user)).id }
+
+        it "404を返し、作成されない" do
+          expect { subject }.not_to change { Income.count }
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
+
+  describe "#update" do
+    subject { put "/api/life_plans/#{life_plan_id}/incomes/#{record_id}", params: }
+
+    let!(:record) { create(:income, life_plan:, family_member: member) }
+    let(:record_id) { record.id }
+    let(:family_member_id) { member.id }
+    let(:params) { { income: { family_member_id:, income_type: "salary", amount: 1_200_000, start_from: 2027, end_to: 2035, memo: "更新" } } }
+
+    context "ログイン済みの場合" do
+      before { login_as(user) }
+
+      it "更新して200を返す" do
+        subject
+        expect(response).to have_http_status(:ok)
+        expect(record.reload).to have_attributes(amount: 1_200_000, start_from: 2027, end_to: 2035, memo: "更新")
+        expect(response.parsed_body["amount"]).to eq(1_200_000)
+      end
+
+      context "別ライフプランのメンバーIDの場合" do
+        let(:family_member_id) { create(:family_member, life_plan: create(:life_plan, user:)).id }
+
+        it "404を返し、更新されない" do
+          subject
+          expect(response).to have_http_status(:not_found)
+          expect(record.reload.amount).not_to eq(1_200_000)
+        end
+      end
+
+      context "他ユーザーのデータの場合" do
+        let(:other_record) { create(:income, life_plan: create(:life_plan, user: create(:user))) }
+        let(:life_plan_id) { other_record.life_plan_id }
+        let(:record_id) { other_record.id }
+        let(:family_member_id) { other_record.family_member_id }
+
+        it "404を返し、更新されない" do
+          subject
+          expect(response).to have_http_status(:not_found)
+          expect(other_record.reload.amount).not_to eq(1_200_000)
+        end
+      end
+    end
+
+    context "未ログインの場合" do
+      it_behaves_like 'requires authentication'
+    end
+  end
 end
