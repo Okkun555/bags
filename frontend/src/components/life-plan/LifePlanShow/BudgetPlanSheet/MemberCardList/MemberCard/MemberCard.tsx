@@ -20,6 +20,34 @@ import { investmentTypeLabels, type Investment } from "@/types/investment";
 import { DeleteIncomeDialog, DeleteInvestmentDialog } from "./DeleteEntryDialog";
 import { EntrySection } from "./EntrySection";
 
+const sumAmount = (items: Array<{ amount: number }>) =>
+  items.reduce((sum, item) => sum + item.amount, 0);
+
+type HeaderTotalProps = {
+  label: string;
+  color: string;
+  value: number;
+};
+
+/** 見出し右側に表示する年額合計 */
+const HeaderTotal: FC<HeaderTotalProps> = ({ label, color, value }) => (
+  <Box sx={{ textAlign: "right" }}>
+    <Stack
+      direction="row"
+      spacing={0.5}
+      sx={{ alignItems: "center", justifyContent: "flex-end" }}
+    >
+      <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: color }} />
+      <Typography variant="body2" color="text.secondary">
+        {label}（年）
+      </Typography>
+    </Stack>
+    <Typography sx={{ fontWeight: 700, fontSize: "1.2rem" }}>
+      {value.toLocaleString("ja-JP")}円
+    </Typography>
+  </Box>
+);
+
 type Props = {
   lifePlanId: number;
   familyMember: FamilyMember;
@@ -70,6 +98,23 @@ export const MemberCard: FC<Props> = ({
               {dayjs(familyMember.birthday).format("YYYY/MM/DD")}生）
             </Typography>
           </Box>
+          {/* MEMO: スマホ幅では非表示 */}
+          <Stack
+            direction="row"
+            spacing={3}
+            sx={{ display: { xs: "none", sm: "flex" }, mr: 1 }}
+          >
+            <HeaderTotal
+              label="収入"
+              color="success.main"
+              value={sumAmount(incomes)}
+            />
+            <HeaderTotal
+              label="投資"
+              color="primary.main"
+              value={sumAmount(investments)}
+            />
+          </Stack>
           <IconButton
             aria-label="メンバーの操作"
             onClick={(e) => setMenuAnchor(e.currentTarget)}
@@ -88,7 +133,7 @@ export const MemberCard: FC<Props> = ({
                 onEdit();
               }}
             >
-              編集
+              メンバーを編集
             </MenuItem>
             <MenuItem
               sx={{ color: "error.main" }}
@@ -97,7 +142,7 @@ export const MemberCard: FC<Props> = ({
                 onDelete();
               }}
             >
-              削除
+              メンバーを削除
             </MenuItem>
           </Menu>
         </Stack>
