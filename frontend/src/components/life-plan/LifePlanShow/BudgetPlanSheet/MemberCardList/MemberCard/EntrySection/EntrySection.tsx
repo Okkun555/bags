@@ -29,6 +29,8 @@ type Props = {
   /** 追加ボタンの文言(例: 収入を追加) */
   addLabel: string;
   rows: Array<EntryRow>;
+  onAdd: () => void;
+  onEdit: (id: number) => void;
   onDelete: (id: number) => void;
 };
 
@@ -44,6 +46,8 @@ export const EntrySection: FC<Props> = ({
   color,
   addLabel,
   rows,
+  onAdd,
+  onEdit,
   onDelete,
 }) => {
   const total = rows.reduce((sum, row) => sum + row.amount, 0);
@@ -58,11 +62,10 @@ export const EntrySection: FC<Props> = ({
         <Typography variant="body1" color="text.secondary" sx={{ flexGrow: 1, fontSize: "1.2rem" }}>
           年 {yen(total)}
         </Typography>
-        {/* MEMO: 追加機能は別チケットで実装する */}
         <Button
           variant="outlined"
           size="large"
-          disabled
+          onClick={onAdd}
           sx={{ borderStyle: "dashed", borderRadius: 2, fontSize: "1.1rem" }}
         >
           ＋ {addLabel}
@@ -103,8 +106,7 @@ export const EntrySection: FC<Props> = ({
                 </TableCell>
                 <TableCell>{formatPeriod(row.startFrom, row.endTo)}</TableCell>
                 <TableCell align="right" sx={{ whiteSpace: "nowrap" }}>
-                  {/* MEMO: 編集機能は別チケットで実装する */}
-                  <Button size="large" disabled>
+                  <Button size="large" onClick={() => onEdit(row.id)}>
                     編集
                   </Button>
                   <Button size="large" color="error" onClick={() => onDelete(row.id)}>

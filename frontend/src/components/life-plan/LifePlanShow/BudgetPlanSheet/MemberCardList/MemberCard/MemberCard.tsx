@@ -18,6 +18,7 @@ import { relationshipLabels, type FamilyMember } from "@/types/familyMember";
 import { incomeTypeLabels, type Income } from "@/types/income";
 import { investmentTypeLabels, type Investment } from "@/types/investment";
 import { DeleteIncomeDialog, DeleteInvestmentDialog } from "./DeleteEntryDialog";
+import { EntryFormDialog, type EntryKind } from "./EntryFormDialog";
 import { EntrySection } from "./EntrySection";
 
 const sumAmount = (items: Array<{ amount: number }>) =>
@@ -67,6 +68,11 @@ export const MemberCard: FC<Props> = ({
   onDelete,
 }) => {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  /** 登録・編集ダイアログの対象(entry 未指定なら新規登録) */
+  const [entryForm, setEntryForm] = useState<{
+    kind: EntryKind;
+    entry?: Income | Investment;
+  } | null>(null);
   const [deleteIncome, setDeleteIncome] = useState<Income | null>(null);
   const [deleteInvestment, setDeleteInvestment] = useState<Investment | null>(
     null,
@@ -156,6 +162,13 @@ export const MemberCard: FC<Props> = ({
               ...income,
               typeLabel: incomeTypeLabels[income.incomeType],
             }))}
+            onAdd={() => setEntryForm({ kind: "income" })}
+            onEdit={(id) =>
+              setEntryForm({
+                kind: "income",
+                entry: incomes.find((i) => i.id === id),
+              })
+            }
             onDelete={(id) =>
               setDeleteIncome(incomes.find((i) => i.id === id) ?? null)
             }
@@ -168,12 +181,29 @@ export const MemberCard: FC<Props> = ({
               ...investment,
               typeLabel: investmentTypeLabels[investment.investmentType],
             }))}
+            onAdd={() => setEntryForm({ kind: "investment" })}
+            onEdit={(id) =>
+              setEntryForm({
+                kind: "investment",
+                entry: investments.find((i) => i.id === id),
+              })
+            }
             onDelete={(id) =>
               setDeleteInvestment(investments.find((i) => i.id === id) ?? null)
             }
           />
         </Stack>
       </Paper>
+
+      {entryForm && (
+        <EntryFormDialog
+          kind={entryForm.kind}
+          lifePlanId={lifePlanId}
+          familyMember={familyMember}
+          entry={entryForm.entry}
+          handleClose={() => setEntryForm(null)}
+        />
+      )}
 
       {deleteIncome && (
         <DeleteIncomeDialog
