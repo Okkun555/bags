@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_07_090300) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_12_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -55,6 +55,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_07_090300) do
     t.string "name", null: false, comment: "名前"
     t.string "relationship", null: false, comment: "続柄(me:本人, spouse:配偶者, mother:母, father:父, child:子, other:その他)"
     t.datetime "updated_at", null: false
+    t.index ["life_plan_id", "relationship"], name: "index_family_members_on_life_plan_id_and_me_or_spouse", unique: true, where: "((relationship)::text = ANY ((ARRAY['me'::character varying, 'spouse'::character varying])::text[]))"
     t.index ["life_plan_id"], name: "index_family_members_on_life_plan_id"
     t.check_constraint "relationship::text = ANY (ARRAY['me'::character varying, 'spouse'::character varying, 'mother'::character varying, 'father'::character varying, 'child'::character varying, 'other'::character varying]::text[])", name: "family_members_relationship_check"
   end

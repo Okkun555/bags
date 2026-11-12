@@ -260,7 +260,7 @@ RSpec.describe "Api::LifePlans", type: :request do
 
       context "配下に家族メンバー・収入・投資がある場合" do
         let!(:income) { create(:income, life_plan:) }
-        let!(:investment) { create(:investment, life_plan:) }
+        let!(:investment) { create(:investment, life_plan:, family_member: income.family_member) }
 
         it "200を返し、ライフプランと配下のデータをすべて削除する" do
           expect { subject }.to change { LifePlan.count }.by(-1)

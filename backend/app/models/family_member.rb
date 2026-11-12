@@ -18,4 +18,5 @@ class FamilyMember < ApplicationRecord
   validates :name, presence: true, length: { maximum: 100 }
   validates :relationship, presence: true
   validates :birthday, presence: true
+  validates :relationship, uniqueness: { scope: :life_plan_id, message: "は同じライフプランに1人までしか登録できません" }, if: -> { me? || spouse? }
 end

@@ -23,6 +23,28 @@ RSpec.describe FamilyMember, type: :model do
       expect { member.update_column(:relationship, "friend") }.to raise_error(ActiveRecord::StatementInvalid)
     end
 
+    %w[me spouse].each do |relationship|
+      it "同じライフプランに#{relationship}を2人登録することはできない" do
+        existing = create(:family_member, relationship:)
+        expect(build(:family_member, life_plan: existing.life_plan, relationship:)).not_to be_valid
+      end
+
+      it "別のライフプランであれば#{relationship}を登録できる" do
+        create(:family_member, relationship:)
+        expect(build(:family_member, relationship:)).to be_valid
+      end
+    end
+
+    it "同じライフプランに本人と配偶者は1人ずつ登録できる" do
+      me = create(:family_member, relationship: "me")
+      expect(build(:family_member, life_plan: me.life_plan, relationship: "spouse")).to be_valid
+    end
+
+    it "同じライフプランに子は複数登録できる" do
+      child = create(:family_member, relationship: "child")
+      expect(build(:family_member, life_plan: child.life_plan, relationship: "child")).to be_valid
+    end
+
     it "定義済みのrelationshipはすべて保存できる" do
       described_class.relationships.each_key do |relationship|
         expect(build(:family_member, relationship:)).to be_valid
